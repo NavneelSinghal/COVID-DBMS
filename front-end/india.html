@@ -1,0 +1,222 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Covid19 India RDBMS</title>
+  <meta name="description" content="Covid-19 Dashboard India">
+  <meta name="author" content="navneel-piyush-sarthak">
+  <link rel="stylesheet" href="main.css">
+
+  <!-- Using chart.js CDN right now, will eventually use a local copy -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" defer></script>
+
+  <script src="india.js" defer></script>
+</head>
+
+<body>
+  <h2 class="title">Covid-19 India Dashboard</h2>
+  <nav>
+    <a href="" class="current-page">Dashboard</a>
+    <a href="">State-wise</a>
+    <a href="">District-wise</a>
+    <a href="">Admin Panel</a>
+  </nav>
+  <div id="india-summary">
+	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
+    <h3>Summary</h3>
+    <p>
+	  India covid-19 stats from 
+	  <input name="date-from" type="date" value="2020-01-30"/>
+	  to
+	  <input name="date-to" type="date" value="2021-03-25"/>
+	</p>
+    
+    <table>
+      <thead>
+		<!-- will be generated using js -->
+      </thead>
+      <tbody>
+		<!-- will be generated using js -->
+      </tbody>
+    </table>
+
+    <p>Columns Displayed :</p>
+    <ul class="column-picker">
+      <li> <label><input type="checkbox" value="Confirmed Cases" checked/>Confirmed Cases</label> </li>
+      <li> <label><input type="checkbox" value="Recovered Cases" checked/>Recovered Cases</label> </li>
+      <li> <label><input type="checkbox" value="Active Cases" checked/>Active Cases</label> </li>
+      <li> <label><input type="checkbox" value="Deceased Cases" checked/>Deceased Cases</label> </li>
+      <li> <label><input type="checkbox" value="Other Cases"/>Other Cases</label> </li>
+      <li> <label><input type="checkbox" value="Tested" checked/>Tested</label> </li>
+      <li> <label><input type="checkbox" value="Total Vaccine Doses" checked/>Total Vaccine Doses</label> </li>
+      <li> <label><input type="checkbox" value="Active Ratio"/>Active Ratio</label> </li>
+      <li> <label><input type="checkbox" value="Recovery Ratio"/>Recovery Ratio</label> </li>
+      <li> <label><input type="checkbox" value="Case Fatality Ratio"/>Case Fatality Ratio</label> </li>
+      <li> <label><input type="checkbox" value="Test Positivity Ratio"/>Test Positivity Ratio</label> </li>
+      <li> <label><input type="checkbox" value="Confirmed per lakh"/>Confirmed per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Recovered per lakh"/>Recovered per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Active per lakh"/>Active per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Deceased per lakh"/>Deceased per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Other per lakh"/>Other per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Tested per lakh"/>Tested per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Total Vaccine Doses per lakh"/>Total Vaccine Doses per lakh</label> </li>
+    </ul>
+  </div>
+  <hr/>
+  <div id="india-daily">
+	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
+    <h3>Daily Statistics</h3>
+    <p>
+	  Daily
+	  <select name="parameter">
+        <option>Confirmed Cases</option>
+        <option>Recovered Cases</option>
+        <option>Active Cases</option>
+        <option>Deceased Cases</option>
+        <option>Other Cases</option>
+        <option>Tested</option>
+        <option>Total Vaccine Doses</option>
+        <option>Growth Rate</option>
+        <option>Active Ratio</option>
+        <option>Recovery Ratio</option>
+      </select>
+      for last
+	  <input type="number" name="ndays" min="3" max="30" value="7" step="1"/>
+	  days
+    </p>
+	<canvas id="daily-chart" width="800" height="300"></canvas>
+  </div>
+  <hr/>
+  <div id="india-vaccinations">
+	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
+    <h3>Vaccine Progress</h3>
+    <p>
+	  India vaccine progress from
+	  <input name="date-from" type="date" value="2021-01-16"/>
+	  up to
+	  <input name="date-to" type="date" value="2021-03-25"/>
+	</p>
+    
+    <table>
+      <thead>
+		<!-- will be generated using js -->
+      </thead>
+      <tbody>
+		<!-- will be generated using js -->
+      </tbody>
+    </table>
+
+    <p>Columns Displayed :</p>
+    <ul class="column-picker">
+      <li> <label><input type="checkbox" value="Total Dose"/>Total Dose</label> </li>
+      <li> <label><input type="checkbox" value="First Dose"/>First Dose</label> </li>
+      <li> <label><input type="checkbox" value="Second Dose"/>Second Dose</label> </li>
+      <li> <label><input type="checkbox" value="Males Vaccinated"/>Males Vaccinated</label> </li>
+      <li> <label><input type="checkbox" value="Females Vaccinated"/>Females Vaccinated</label> </li>
+      <li> <label><input type="checkbox" value="Transgender Vaccinated"/>Transgender Vaccinated</label> </li>
+      <li> <label><input type="checkbox" value="Total Sessions Conducted" checked/>Total Sessions Conducted</label> </li>
+      <li> <label><input type="checkbox" value="Total Covaxin"/>Total Covaxin</label> </li>
+      <li> <label><input type="checkbox" value="Total Covishield"/>Total Covishield</label> </li>
+      <li> <label><input type="checkbox" value="Percentage Vaccinated (first dose)" checked/>Percentage Vaccinated (first dose)</label> </li>
+      <li> <label><input type="checkbox" value="Total Dose per lakh" checked/>Total Dose per lakh</label> </li>
+      <li> <label><input type="checkbox" value="First Dose per lakh" checked/>First Dose per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Second Dose per lakh" checked/>Second Dose per lakh</label> </li>
+    </ul>
+  </div>
+  <hr/>
+  <div id="india-states">
+	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
+    <h3>States at a glance</h3>
+    <p>Click on any state to view more information about that state.</p>
+	<p>
+	  Sort states by
+	  <select name="parameter">
+		<option>Confirmed Cases</option>
+		<option>Active Cases</option>
+		<option>Recovered Cases</option>
+		<option>Deceased Cases</option>
+		<option>Tested</option>
+		<option>Vaccinated</option>
+	  </select>
+	  <select name="order">
+		<option>Ascending</option>
+		<option>Descending</option>
+	  </select>
+	</p>
+    <table>
+      <thead>
+        <tr>
+          <th>State</th>
+		  <th>Confirmed Cases</th>
+		  <th>Active Cases</th>
+		  <th>Recovered Cases</th>
+		  <th>Deceased Cases</th>
+		  <th>Tested</th>
+		  <th>Vaccinated</th>
+        </tr>
+      </thead>
+      <tbody>
+		<!-- will be generated using js -->
+      </tbody>
+    </table>
+  </div>
+  <hr/>
+  <div id="india-analysis">
+	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
+    <h3>Data Analysis</h3>
+    <p>
+	  Find top 3
+      <select name="granularity">
+        <option selected>Days</option>
+        <option>Weeks</option>
+        <option>Months</option>
+      </select>
+      between
+      <input name="date-from" type="date" value="2021-01-18"/>
+      and
+      <input name="date-to" type="date" value="2021-03-25"/>
+      when
+      <select name="type">
+        <option selected>Daily/Weekly/Monthy</option>
+        <option>Cumulative</option>
+      </select>
+      <select name="parameter">
+		<optgroup name="both" label="Both Cumulative and Daily Measured">
+		  <option>Confirmed Cases</option>
+		  <option>Recovered Cases</option>
+		  <option>Active Cases</option>
+		  <option>Deceased Cases</option>
+		  <option>Other Cases</option>
+		  <option>Tested</option>
+		  <option>Total Vaccine Doses</option>
+		</optgroup>
+		<optgroup name="daily" label="Only Daily Measured">
+		  <option selected>Growth Rate</option>
+		</optgroup>
+		<optgroup name="cumulative" label="Only Cumulative Measured">
+		  <option>Active Ratio</option>
+		  <option>Recovery Ratio</option>
+		  <option>Test Positivity Ratio</option>
+		  <option>Fatality Ratio</option>
+		</optgroup>
+      </select>
+      were
+      <select name="query">
+        <option selected>Maximum</option>
+        <option>Minimum</option>
+      </select>
+    </p>
+
+    <table>
+      <thead>
+		<!-- will be generated using js -->
+      </thead>
+      <tbody>
+		<!-- will be generated using js -->
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>
