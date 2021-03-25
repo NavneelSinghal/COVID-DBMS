@@ -1,0 +1,62 @@
+.title {
+  text-align: center;
+}
+
+nav {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+}
+
+nav a {
+  padding: 5px;
+}
+
+nav a[class="current-page"] {
+  border: 1px solid blue;
+  background-color: rgba(0, 0, 255, 0.5);
+}
+
+nav a:hover {
+  background-color: blue;
+  color: white;
+}
+
+.refresh-button {
+  float: right;
+}
+
+.column-picker {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.column-picker li {
+  padding: 5px;
+}
+
+table {
+  width:  100%;
+  border-collapse: collapse;
+}
+
+td, th {
+  border: 1px solid black;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+input[type="number"] {
+  width: 5em;
+}
+
+canvas {
+  display: block;
+  width: 800px;
+  height: 300px;
+  border: 1px solid black;
+  margin: auto;
+}
