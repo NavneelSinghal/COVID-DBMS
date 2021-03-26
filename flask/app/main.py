@@ -1,6 +1,6 @@
 import psycopg2
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for
 # from flask_login import current_user
 from configparser import ConfigParser
 
@@ -18,51 +18,57 @@ def config(filename='database.ini', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return db
 
-def connect():
+def request_query(query: str, is_update: bool):
     connection = None
+    query_output = None
     try:
         database_parameters = config()
         connection = psycopg2.connect(**database_parameters)
         cursor = connection.cursor()
-        cursor.execute('SELECT version()')
-        db_version = cursor.fetchone()
-        print(db_version)
+        if is_update:
+            cursor.execute(query)
+            connection.commit()
+        else:
+            cursor.execute(query)
+        query_output = cursor.fetchall()
         cursor.close()
-    except (Exception, psycopg2.DatabaseError) as error:
+    except psycopg2.DatabaseError as error:
+        if is_update:
+            connection.rollback()
         print(error)
     finally:
         if connection is not None:
             connection.close()
-            print('Closed connection successfully')
+        return query_output # change this to format stuff correctly
 
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
-    return render_template('templates/india.html')
+    return render_template('india.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
 @app.route('/states')
 def state_dashboard():
-    return render_template('templates/states.html')
+    return render_template('states.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
 @app.route('/districts')
 def district_dashboard():
-    return render_template('templates/districts.html')
+    return render_template('districts.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
 # @app.route('/auth')
 # @app.route('/admin')
 # def login_page_or_admin_dashboard():
 #     if current_user.is_authenticated:
-#         return render_template('templates/admin.html')
+#         return render_template('admin.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 #     else:
-#         return render_template('templates/login.html')
+#         return render_template('login.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
 @app.route('/auth')
 def dummy_login_page():
-    return render_template('templates/login.html')
+    return render_template('login.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
 @app.route('/admin')
 def dummy_admin_page():
-    return render_template('templates/admin.html')
+    return render_template('admin.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
 if __name__ == '__main__':
     # connect()
