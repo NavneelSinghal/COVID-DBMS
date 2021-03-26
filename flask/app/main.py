@@ -6,6 +6,9 @@ from configparser import ConfigParser
 
 app = Flask(__name__)
 
+'''
+Helper function for parsing database details
+'''
 def config(filename='database.ini', section='postgresql'):
     parser = ConfigParser()
     parser.read(filename)
@@ -18,28 +21,35 @@ def config(filename='database.ini', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return db
 
-def request_query(query: str, is_update: bool):
+'''
+Helper function for query - returns (error_code, list of tuples)
+'''
+def request_query(queryfile, inputs, is_update):
     connection = None
     query_output = None
+    error_code = 0
     try:
         database_parameters = config()
         connection = psycopg2.connect(**database_parameters)
         cursor = connection.cursor()
+        cursor.execute(open(queryfile, 'r').read(), inputs)
         if is_update:
-            cursor.execute(query)
             connection.commit()
-        else:
-            cursor.execute(query)
         query_output = cursor.fetchall()
         cursor.close()
     except psycopg2.DatabaseError as error:
-        if is_update:
+        if is_update and connection is not None:
             connection.rollback()
-        print(error)
+        query_output = [repr(error)]
+        error_code = 1
     finally:
         if connection is not None:
             connection.close()
-        return query_output # change this to format stuff correctly
+        return (error_code, query_output)
+
+'''
+Webpage rendering
+'''
 
 @app.route('/')
 @app.route('/dashboard')
@@ -69,6 +79,18 @@ def dummy_login_page():
 @app.route('/admin')
 def dummy_admin_page():
     return render_template('admin.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
+
+'''
+Queries
+'''
+@app.route('/api/india/summary')
+def india_summary():
+    pass
+
+'''
+Updates
+'''
+
 
 if __name__ == '__main__':
     # connect()

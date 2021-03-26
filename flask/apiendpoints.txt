@@ -22,6 +22,8 @@ GET /admin
 request: {}
 response: templates/admin.html or redirect to /auth etc.
 
+Status of the above: COMPLETED (except for implementing login functionality)
+
 ----------------------------------------
 
 let india-summary-column := Confirmed Cases, Recovered Cases, Active Cases,
