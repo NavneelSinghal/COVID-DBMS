@@ -19,6 +19,7 @@ const daily_div = elem('#india-daily');
 sel = daily_div.querySelector.bind(daily_div);
 const daily = {
   refresh : sel('input[name=refresh-button]'),
+  type: sel('select[name=type]'),
   parameter: sel('select[name=parameter]'),
   ndays : sel('input[name=ndays]'),
   canvas: sel('canvas'),
@@ -126,6 +127,7 @@ function refreshSummary() {
 }
 
 function refreshDaily() {
+  let type = daily.type.value;
   let param = daily.parameter.value;
   let ndays = daily.ndays.value;
 
