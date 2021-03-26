@@ -94,7 +94,7 @@ Queries
 @app.route('/api/india/summary')
 def india_summary():
     # print(request.args.get(''))
-    return request_query(url_for('static', filename='sql/dummy.sql'), ())
+    return request_query('app/sql/dummy.sql', ())
 
 # implement the middle one later
 
@@ -102,7 +102,7 @@ def india_summary():
 def india_vaccine():
     print(request.args.get('from'))
     print(request.args.get('to'))
-    return request_query(url_for('static', filename='sql/dummy.sql'), (request.args.get('from'), request.args.get('to')))
+    return request_query('app/sql/dummy.sql', (request.args.get('from'), request.args.get('to')))
 
 # implement the remaining ones later
 
