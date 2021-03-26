@@ -27,7 +27,6 @@ Helper function for query - returns (error_code, list of tuples)
 def request_query(queryfile, inputs, is_update):
     connection = None
     query_output = None
-    error_code = 0
     try:
         database_parameters = config()
         connection = psycopg2.connect(**database_parameters)
@@ -35,17 +34,24 @@ def request_query(queryfile, inputs, is_update):
         cursor.execute(open(queryfile, 'r').read(), inputs)
         if is_update:
             connection.commit()
+        column_names = [desc[0] for desc in cursor.description]
         query_output = cursor.fetchall()
+        answer = {}
+        for column_name in column_names:
+            answer[column_name] = []
+        for q_out in query_output:
+            for column_name, value in zip(column_names, q_out):
+                answer[column_name].append(value)
+        query_output = answer
         cursor.close()
     except psycopg2.DatabaseError as error:
         if is_update and connection is not None:
             connection.rollback()
-        query_output = [repr(error)]
-        error_code = 1
+        query_output = {'error': repr(error)}
     finally:
         if connection is not None:
             connection.close()
-        return (error_code, query_output)
+        return query_output
 
 '''
 Webpage rendering
@@ -86,14 +92,7 @@ Queries
 @app.route('/api/india/summary')
 def india_summary():
     # print(request.args.get(''))
-    error_code, query_result = request_query(url_for('sql', filename='dummy.sql'), ())
-    answer = {}
-    if error_code == 0:
-        # assumes at least 1
-        answer['india-summary-column'] = query_result[0][0]
-    else:
-        answer['error'] = query_result[0]
-    return answer
+    return request_query(url_for('static', filename='sql/dummy.sql'), ())
 
 # implement the middle one later
 
@@ -101,14 +100,7 @@ def india_summary():
 def india_vaccine():
     print(request.args.get('from'))
     print(request.args.get('to'))
-    error_code, query_result = request_query(url_for('sql', filename='dummy.sql'), (request.args.get('from'), request.args.get('to')))
-    answer = {}
-    if error_code == 0:
-        # assumes at least 1
-        answer['india-vaccine-column'] = query_result[0][0]
-    else:
-        answer['error'] = query_result[0]
-    return answer
+    return request_query(url_for('static', filename='sql/dummy.sql'), (request.args.get('from'), request.args.get('to')))
 
 # implement the remaining ones later
 
