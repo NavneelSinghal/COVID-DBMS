@@ -9,7 +9,7 @@ app = Flask(__name__)
 '''
 Helper function for parsing database details
 '''
-def config(filename='database.ini', section='postgresql'):
+def config(filename='app/database.ini', section='postgresql'):
     parser = ConfigParser()
     parser.read(filename)
     db = {}
@@ -24,7 +24,7 @@ def config(filename='database.ini', section='postgresql'):
 '''
 Helper function for query - returns (error_code, list of tuples)
 '''
-def request_query(queryfile, inputs, is_update):
+def request_query(queryfile, inputs, is_update=False):
     connection = None
     query_output = None
     try:
@@ -35,6 +35,7 @@ def request_query(queryfile, inputs, is_update):
         if is_update:
             connection.commit()
         column_names = [desc[0] for desc in cursor.description]
+        # print(column_names)
         query_output = cursor.fetchall()
         answer = {}
         for column_name in column_names:
@@ -47,11 +48,12 @@ def request_query(queryfile, inputs, is_update):
     except psycopg2.DatabaseError as error:
         if is_update and connection is not None:
             connection.rollback()
+        print(repr(error))
         query_output = {'error': repr(error)}
     finally:
         if connection is not None:
             connection.close()
-        return query_output
+    return query_output
 
 '''
 Webpage rendering
