@@ -1,0 +1,156 @@
+GET /
+request: {}
+response: redirect to /dashboard
+
+GET /dashboard
+request: {}
+response: templates/india.html etc.
+
+GET /states?stateid=<number>
+request: {}
+response: templates/states.html etc.
+
+GET /district?districtid=<number>
+request: {}
+response: templates/districts.html etc.
+
+GET /auth
+request: {}
+response: templates/login.html or redirect to /admin etc.
+
+GET /admin
+request: {}
+response: templates/admin.html or redirect to /auth etc.
+
+----------------------------------------
+
+let india-summary-column := Confirmed Cases, Recovered Cases, Active Cases,
+Deceased Cases, Other Cases, Tested, Total Vaccine Doses, Active Ratio,
+Recovery Ratio, Case Fatality Ratio, Test Positivity Ratio, Confirmed per lakh,
+Recovered per lakh, Active per lakh, Deceased per lakh, Other per lakh, Tested
+per lakh, Total Vaccine Doses per lakh, Population
+
+let stats-type := Daily, Cumulative
+
+let stats-parameter := Confirmed Cases, Recovered Cases, Active Cases, Deceased
+Cases, Tested, Total Vaccine Doses, Growth Rate, Active Ratio, Recovery Ratio,
+Test Positivity Ratio, Fatality Ratio
+
+let number := [0-9]+
+
+let date := yyyy-mm-dd
+
+let india-vaccine-column := Total Dose, First Dose, Second Dose, Males
+Vaccinated, Females Vaccinated, Transgender Vaccinated, Total Sessions
+Conducted, Total Covaxin, Total Covishield, Percentage Vaccinated (first dose),
+Total Dose per lakh, First Dose per lakh, Second Dose per lakh
+
+let india-states-sort := Confirmed Cases, Recovered Cases, Active Cases,
+Deceased Cases, Tested, Vaccinated
+
+let sorttype := Ascending, Descending
+
+let india-analysis-granularity := Days, Weeks, Months
+
+let stats-query := Maximum, Minimum
+
+let states-district-sort := Confirmed Cases, Recovered Cases, Active Cases,
+Deceased Cases
+
+
+GET /api/india/summary
+request: {}
+response: {
+  key: value,
+  ...
+}
+where key = india-summary-column, value = its value
+
+GET /api/india/daily?type=stats-type&parameter=stats-parameter&ndays=number
+request: {}
+response: {
+  dates: [ ... ],
+  values: [ ... ]
+}
+
+GET /api/india/vaccine?from=date&to=date
+request: {}
+response: {
+  key: value,
+  ...
+}
+where key=india-vaccine-column, value = its value
+
+GET /api/india/analysis?granularity=india-analysis-granularity&from=date&
+to=date&type=stats-type&parameter=stats-parameter&query=stats-query
+request: {}
+response: {
+  ans: [
+	{
+	  key: date or week or month,
+	  value: value
+	}
+	...
+  ]
+}
+
+repeat all the above api end points for /api/states/<stateid>/
+we can also let <stateid> = India to have a uniform interface
+
+GET /api/india/liststates?sortedby=india-states-sort&sortedin=sorttype
+request: {}
+response: {
+  states: [
+	{
+	  name: ...,
+	  stateid: ...,
+	  confirmed: ...,
+	  active: ...,
+	  recovered: ...,
+	  deceased: ...,
+	  tested: ...,
+	  vaccinated: ...,
+	}
+	...
+  ]
+}
+
+GET /api/states/list
+request: {}
+response: {
+  states: [
+	{
+	  name: ...,
+	  stateid: ...
+	}
+	...
+  ]
+}
+
+GET /api/states/<stateid>/listdistricts?sortedby=states-district-sort&sortedin=sorttype
+request: {}
+response: {
+  states: [
+	{
+	  name: ...,
+	  stateid: ...,
+	  confirmed: ...,
+	  active: ...,
+	  recovered: ...,
+	  deceased: ...,
+	}
+	...
+  ]
+}
+
+GET /api/districts/list
+request: {}
+response: {
+  districts: [
+	{
+	  name: ...,
+	  districtid: ...
+	}
+	...
+  ]
+}

@@ -62,6 +62,7 @@
       <li> <label><input type="checkbox" value="Other per lakh"/>Other per lakh</label> </li>
       <li> <label><input type="checkbox" value="Tested per lakh"/>Tested per lakh</label> </li>
       <li> <label><input type="checkbox" value="Total Vaccine Doses per lakh"/>Total Vaccine Doses per lakh</label> </li>
+      <li> <label><input type="checkbox" value="Population"/>Population</label> </li>
     </ul>
   </div>
   <hr/>
@@ -69,18 +70,26 @@
 	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
     <h3>Daily Statistics</h3>
     <p>
-	  Daily
-	  <select name="parameter">
-        <option>Confirmed Cases</option>
-        <option>Recovered Cases</option>
-        <option>Active Cases</option>
-        <option>Deceased Cases</option>
-        <option>Other Cases</option>
-        <option>Tested</option>
-        <option>Total Vaccine Doses</option>
-        <option>Growth Rate</option>
-        <option>Active Ratio</option>
-        <option>Recovery Ratio</option>
+	  <select name="type">
+		<option selected>Daily</option>
+		<option>Cumulative</option>
+	  </select>
+      <select name="parameter">
+		<optgroup name="both" label="Both Cumulative and Daily Measured">
+		  <option selected>Confirmed Cases</option>
+		  <option>Recovered Cases</option>
+		  <option>Active Cases</option>
+		  <option>Deceased Cases</option>
+		  <option>Tested</option>
+		  <option>Total Vaccine Doses</option>
+		</optgroup>
+		<optgroup name="cumulative" label="Only Cumulative Measured">
+		  <option>Growth Rate</option>
+		  <option>Active Ratio</option>
+		  <option>Recovery Ratio</option>
+		  <option>Test Positivity Ratio</option>
+		  <option>Fatality Ratio</option>
+		</optgroup>
       </select>
       for last
 	  <input type="number" name="ndays" min="3" max="30" value="7" step="1"/>
@@ -133,7 +142,7 @@
 	<p>
 	  Sort states by
 	  <select name="parameter">
-		<option>Confirmed Cases</option>
+		<option selected>Confirmed Cases</option>
 		<option>Active Cases</option>
 		<option>Recovered Cases</option>
 		<option>Deceased Cases</option>
@@ -142,7 +151,7 @@
 	  </select>
 	  <select name="order">
 		<option>Ascending</option>
-		<option>Descending</option>
+		<option selected>Descending</option>
 	  </select>
 	</p>
     <table>
@@ -192,10 +201,8 @@
 		  <option>Tested</option>
 		  <option>Total Vaccine Doses</option>
 		</optgroup>
-		<optgroup name="daily" label="Only Daily Measured">
-		  <option selected>Growth Rate</option>
-		</optgroup>
 		<optgroup name="cumulative" label="Only Cumulative Measured">
+		  <option selected>Growth Rate</option>
 		  <option>Active Ratio</option>
 		  <option>Recovery Ratio</option>
 		  <option>Test Positivity Ratio</option>
