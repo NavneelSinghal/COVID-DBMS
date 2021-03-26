@@ -85,7 +85,32 @@ Queries
 '''
 @app.route('/api/india/summary')
 def india_summary():
-    pass
+    # print(request.args.get(''))
+    error_code, query_result = request_query(url_for('sql', filename='dummy.sql'), ())
+    answer = {}
+    if error_code == 0:
+        # assumes at least 1
+        answer['india-summary-column'] = query_result[0][0]
+    else:
+        answer['error'] = query_result[0]
+    return answer
+
+# implement the middle one later
+
+@app.route('/api/india/vaccine')
+def india_vaccine():
+    print(request.args.get('from'))
+    print(request.args.get('to'))
+    error_code, query_result = request_query(url_for('sql', filename='dummy.sql'), (request.args.get('from'), request.args.get('to')))
+    answer = {}
+    if error_code == 0:
+        # assumes at least 1
+        answer['india-vaccine-column'] = query_result[0][0]
+    else:
+        answer['error'] = query_result[0]
+    return answer
+
+# implement the remaining ones later
 
 '''
 Updates
