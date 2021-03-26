@@ -1,3 +1,32 @@
+function fetchget(api, params) {
+  let urlparams = new URLSearchParams(params);
+  return fetch(`${api}?${urlparams.toString()}`, {
+	method: 'GET',
+	headers: {
+	  'Content-Type': 'application/x-www-form-urlencoded'
+	}
+  });
+}
+
+function debugflask(api, params) {
+  fetchget(api, params).then(
+	response => {
+	  if (response.ok) {
+		return response.blob();
+	  }
+	  return undefined;
+	}
+  ).then(
+	blob => {
+	  if (blob == undefined) {
+		console.log('Flask returned error (HTTP status code != 200)')
+	  } else {
+		console.log(blob);
+	  }
+	}
+  );
+}
+
 const elem = document.querySelector.bind(document);
 let sel = undefined;
 
@@ -106,24 +135,27 @@ function refreshSummary() {
 	return;
   }
 
-  /* We will make api call here, for now assume dummy values */
+  fetchget('/api/india/summary', {})
+  .then(response => response.json())
+  .then(data => {
+	//Clear existing table header and add new
+	console.log(data);
+	// let header = document.createElement('tr');
+	// selectedCols.forEach((column) => {
+	//   let th = document.createElement('th');
+	//   th.textContent = column;
+	//   header.append(th);
+	// });
+	// summary.tableheader.replaceChildren(header);
 
-  //Clear existing table header and add new
-  let header = document.createElement('tr');
-  selectedCols.forEach((column) => {
-	let th = document.createElement('th');
-	th.textContent = column;
-	header.append(th);
+	// let values = document.createElement('tr');
+	// selectedCols.forEach((column) => {
+	//   let td = document.createElement('td');
+	//   td.textContent = data[column];
+	//   values.append(td);
+	// });
+	// summary.tablebody.replaceChildren(values);
   });
-  summary.tableheader.replaceChildren(header);
-
-  let values = document.createElement('tr');
-  selectedCols.forEach((column) => {
-	let td = document.createElement('td');
-	td.textContent = column;
-	values.append(td);
-  });
-  summary.tablebody.replaceChildren(values);
 }
 
 function refreshDaily() {
@@ -131,18 +163,20 @@ function refreshDaily() {
   let param = daily.parameter.value;
   let ndays = daily.ndays.value;
 
-  /* There will a API call here but for now suppose we have already made it */
-
-  let data = Array();
-  for (let i=0; i<ndays; i++) {
-	data.push(i+1);
-  }
-
-  /* Refresh chart */
-  daily.chart.data.datasets[0].label = param;
-  daily.chart.data.labels = data;
-  daily.chart.data.datasets[0].data = data;
-  daily.chart.update();
+  fetchget('/api/india/daily', {
+	type: type,
+	parameter: param,
+	ndays: ndays
+  })
+  .then(response => response.json())
+  .then(data => {
+	/* Refresh chart */
+	console.log(data);
+	// daily.chart.data.datasets[0].label = param;
+	// daily.chart.data.labels = data.dates;
+	// daily.chart.data.datasets[0].data = data.values;
+	// daily.chart.update();
+  });
 }
 
 function refreshVaccinations() {
@@ -158,23 +192,33 @@ function refreshVaccinations() {
   }
 
   /* We will make api call here, for now assume dummy values */
+  fetchget('/api/india/vaccine/', {
+	from: vaccinations.from.value,
+	to: vaccinations.to.value
+  }).then(
+	response => response.json()
+  ).then(
+	data => {
+	  console.log(data);
+	}
+  );
 
   //Clear existing table header and add new
-  let header = document.createElement('tr');
-  selectedCols.forEach((column) => {
-	let th = document.createElement('th');
-	th.textContent = column;
-	header.append(th);
-  });
-  vaccinations.tableheader.replaceChildren(header);
+  // let header = document.createElement('tr');
+  // selectedCols.forEach((column) => {
+	// let th = document.createElement('th');
+	// th.textContent = column;
+	// header.append(th);
+  // });
+  // vaccinations.tableheader.replaceChildren(header);
 
-  let values = document.createElement('tr');
-  selectedCols.forEach((column) => {
-	let td = document.createElement('td');
-	td.textContent = column;
-	values.append(td);
-  });
-  vaccinations.tablebody.replaceChildren(values);
+  // let values = document.createElement('tr');
+  // selectedCols.forEach((column) => {
+	// let td = document.createElement('td');
+	// td.textContent = column;
+	// values.append(td);
+  // });
+  // vaccinations.tablebody.replaceChildren(values);
 }
 
 function refreshStates() {
@@ -183,17 +227,28 @@ function refreshStates() {
 
   /* We will make api call here, for now assume dummy values */
 
-  let rows = Array();
-  for (let i=0; i<29; i++) {
-	let row = document.createElement('tr');
-	for (let j=0; j<7; j++) {
-	  let td = document.createElement('td');
-	  td.textContent = 'null';
-	  row.append(td);
+  fetchget('/api/india/liststates', {
+	sortedby: param,
+	sortedin: order
+  }).then(
+	response => response.json()
+  ).then(
+	data => {
+	  console.log(data);
 	}
-	rows.push(row);
-  }
-  states.tablebody.replaceChildren(...rows);
+  );
+
+  // let rows = Array();
+  // for (let i=0; i<29; i++) {
+	// let row = document.createElement('tr');
+	// for (let j=0; j<7; j++) {
+	  // let td = document.createElement('td');
+	  // td.textContent = 'null';
+	  // row.append(td);
+	// }
+	// rows.push(row);
+  // }
+  // states.tablebody.replaceChildren(...rows);
 }
 
 function validateAnalysisParameter(event) {
@@ -208,4 +263,18 @@ function validateAnalysisParameter(event) {
 }
 
 function refreshAnalysis() {
+  fetchget('/api/india/analysis', {
+	granularity: analysis.granularity.value,
+	from: analysis.from.value,
+	to: analysis.to.value,
+	type: analysis.type.value,
+	parameter: analysis.parameter.value,
+	query: analysis.query.value
+  }).then(
+	response => response.json()
+  ).then(
+	data => {
+	  console.log(data);
+	}
+  );
 }
