@@ -1,0 +1,19 @@
+.login-box {
+  margin: auto;
+  padding: 20px;
+}
+
+table {
+  width: initial;
+  border-collapse: initial;
+  margin: auto;
+}
+
+tr:nth-child(even) {
+  background-color: initial;
+}
+
+button {
+  display: block;
+  margin: auto;
+}

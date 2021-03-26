@@ -12,22 +12,33 @@
   <!-- Using chart.js CDN right now, will eventually use a local copy -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" defer></script>
 
-  <script src="{{js}}/india.js" defer></script>
+  <script src="{{js}}/states.js" defer></script>
 </head>
 
 <body>
-  <h2 class="title">Covid-19 India Dashboard</h2>
+  <h2 class="title">Covid-19 State Dashboard</h2>
   <nav>
-    <a href="/dashboard" class="current-page">Dashboard</a>
-    <a href="/states">State-wise</a>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/states" class="current-page">State-wise</a>
     <a href="/districts">District-wise</a>
     <a href="/auth">Admin Panel</a>
   </nav>
-  <div id="india-summary">
+  <div id="state-select">
+	<p>
+	  Select state :
+	  <select name="state">
+		<!-- will be generated using js -->
+	  </select>
+	  <button>Go</button>
+	</p>
+  </div>
+  <hr/>
+
+  <div id="state-summary">
 	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
     <h3>Summary</h3>
     <p>
-	  India covid-19 stats from 
+	  <span class="state-name"></span> covid-19 stats from 
 	  <input name="date-from" type="date" value="2020-01-30"/>
 	  to
 	  <input name="date-to" type="date" value="2021-03-25"/>
@@ -66,7 +77,8 @@
     </ul>
   </div>
   <hr/>
-  <div id="india-daily">
+
+  <div id="state-daily">
 	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
     <h3>Daily Statistics</h3>
     <p>
@@ -98,11 +110,12 @@
 	<canvas id="daily-chart" width="800" height="300"></canvas>
   </div>
   <hr/>
-  <div id="india-vaccinations">
+
+  <div id="state-vaccinations">
 	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
     <h3>Vaccine Progress</h3>
     <p>
-	  India vaccine progress from
+	  <span class="state-name"></span> vaccine progress from
 	  <input name="date-from" type="date" value="2021-01-16"/>
 	  up to
 	  <input name="date-to" type="date" value="2021-03-25"/>
@@ -135,19 +148,18 @@
     </ul>
   </div>
   <hr/>
-  <div id="india-states">
+
+  <div id="state-districts">
 	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
-    <h3>States at a glance</h3>
-    <p>Click on any state to view more information about that state.</p>
+	<h3>Districts at a glance (<span class="state-name"></span>)</h3>
+    <p>Click on any district to view more information about that district.</p>
 	<p>
-	  Sort states by
+	  Sort districts by
 	  <select name="parameter">
 		<option selected>Confirmed Cases</option>
 		<option>Active Cases</option>
 		<option>Recovered Cases</option>
 		<option>Deceased Cases</option>
-		<option>Tested</option>
-		<option>Vaccinated</option>
 	  </select>
 	  <select name="order">
 		<option>Ascending</option>
@@ -157,13 +169,11 @@
     <table>
       <thead>
         <tr>
-          <th>State</th>
+          <th>District</th>
 		  <th>Confirmed Cases</th>
 		  <th>Active Cases</th>
 		  <th>Recovered Cases</th>
 		  <th>Deceased Cases</th>
-		  <th>Tested</th>
-		  <th>Vaccinated</th>
         </tr>
       </thead>
       <tbody>
@@ -172,7 +182,7 @@
     </table>
   </div>
   <hr/>
-  <div id="india-analysis">
+  <div id="state-analysis">
 	<input type="button" name="refresh-button" class="refresh-button" value="Refresh"/>
     <h3>Data Analysis</h3>
     <p>
