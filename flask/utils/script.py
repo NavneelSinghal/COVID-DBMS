@@ -77,11 +77,11 @@ with open('output/district.csv','w',newline='') as file:
                 temp=j[0]
         l2=[i,list1[i][1][3:],temp,list1[i][4]]
         writer.writerow(l2)
-        dist.append(l2)
+        dist.append(l2+[list1[i][3]])
 
 dist_daily=[]
 for d in dist:
-    dist_daily.append([d[0],d[1],d[2],d[3],0,0,0,0])
+    dist_daily.append([d[0],d[1],d[4],d[3],0,0,0,0])
 
 with open('output/district_daily.csv','w',newline='') as file:
     with open('input/districts.csv') as csv_file:
@@ -91,9 +91,10 @@ with open('output/district_daily.csv','w',newline='') as file:
         line_count = 0
         date=''
         prev_dist_daily=[x[:] for x in dist_daily]
+        # print(dist_daily)
         for row in csv_reader:
-            #if line_count>1000:
-             #   break
+            # if line_count>40000:
+            #    break
             if line_count==0:
                 line_count=line_count+1
                 state_index=row.index('State')
@@ -120,7 +121,8 @@ with open('output/district_daily.csv','w',newline='') as file:
                     prev_dist_daily=[x[:] for x in dist_daily]
                     date=new_date
                 for i in range(len(dist_daily)):
-                    if dist_daily[i][2]==row[2] and dist_daily[i][3]==row[1]:
+                    # print(row,"piyush",dist_daily[i])
+                    if dist_daily[i][1]==row[2] and dist_daily[i][2]==row[1]:
                         # print('dist',dist_daily[i])
                         # print('prev',prev_dist_daily[i])
                         dist_daily[i][4]=row[confirmed_index]

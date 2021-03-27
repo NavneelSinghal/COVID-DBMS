@@ -22,28 +22,28 @@ CREATE table district(
 );
 
 CREATE table state_daily(
-    date1 Date not null,
+    date_1 Date not null,
     State_id bigint Not null references state_and_ut(State_id),
-    Confimed bigint,
+    confirmed bigint,
     Recovered bigint,
     Deceased bigint,
     Other bigint,
     Tested bigint,
-    constraint state_daily_key primary key(date1,State_id)
+    constraint state_daily_key primary key(date_1,State_id)
 );
 
 CREATE table district_daily(
-    date1 Date not null,
+    date_1 Date not null,
     District_id bigint Not null references District(District_id),
-    Confimed bigint,
+    confirmed bigint,
     Recovered bigint,
     Deceased bigint,
     Other bigint,
-    constraint district_daily_key primary key(date1,District_id)
+    constraint district_daily_key primary key(date_1,District_id)
 );
 
 Create table vaccine_daily(
-    date1 Date not null,
+    date_1 Date not null,
     State_id bigint references state_and_ut(State_id),
     Total_Individuals_Registered bigint,
     Total_Sessions_Conducted bigint,
@@ -57,7 +57,7 @@ Create table vaccine_daily(
     Total_CoviShield_Administered bigint,
     Total_Individuals_Vaccinated bigint,
     Total_Doses_Administered bigint,
-    constraint vaccine_daily_key primary key(date1,State_id)
+    constraint vaccine_daily_key primary key(date_1,State_id)
 
 );
 
@@ -72,4 +72,4 @@ Create table vaccine_daily(
 \copy district from './../../utils/output/district.csv' csv header;
 \copy district_daily from './../../utils/output/district_daily.csv' csv header;
 \copy state_daily from './../../utils/output/state_daily.csv' csv header;
-\copy vaccine_daily from './../../utils/output/vaccine_daily.csv' csv header;
+\copy vaccine_daily from './../../utils/output/vaccine_daily.csv' csv header
