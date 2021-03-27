@@ -1,8 +1,8 @@
-drop table state_daily;
-drop table district_daily;
-drop table vaccine_daily;
-drop table district;
-drop table state_and_ut;
+drop table if exists state_daily;
+drop table if exists district_daily;
+drop table if exists vaccine_daily;
+drop table if exists district;
+drop table if exists state_and_ut;
 
 
 
@@ -39,7 +39,6 @@ CREATE table district_daily(
     Recovered bigint,
     Deceased bigint,
     Other bigint,
-    Tested bigint,
     constraint district_daily_key primary key(date1,District_id)
 );
 
@@ -63,11 +62,11 @@ Create table vaccine_daily(
 );
 
 
-Delete from vaccine_daily
-Delete from state_daily
-Delete from district_daily
-Delete from district
-Delete from state_and_ut
+-- Delete from vaccine_daily
+-- Delete from state_daily
+-- Delete from district_daily
+-- Delete from district
+-- Delete from state_and_ut
 
 \copy state_and_ut from './../../utils/output/state_and_ut.csv' csv header;
 \copy district from './../../utils/output/district.csv' csv header;
