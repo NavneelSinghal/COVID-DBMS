@@ -12,7 +12,7 @@ with open('input/india-districts-census-2011.csv') as csv_file:
         if line_count == 0:
             line_count=line_count+1
         else:
-            dist_pop.append([row[2],row[3]])
+            dist_pop.append([row[2],row[3],row[1]])
 
 with open('input/district_wise.csv') as csv_file:
     csv_reader = csv.reader(csv_file, delimiter=',')
@@ -31,7 +31,7 @@ with open('input/district_wise.csv') as csv_file:
             temp=''
             for l in dist_pop:
                 # print(l,row[dcode_index])
-                if l[0]==row[dcode_index][3:]:
+                if l[0]==row[dcode_index][3:] and (l[2].lower())==(row[state_name].lower()):
                     temp=l[1]
             list1.append([row[scode_index],row[dcode_index],row[key_index],row[state_name],temp])
 
@@ -65,7 +65,7 @@ dist=[]
            
 
 
-with open('output/district_id.csv','w',newline='') as file:
+with open('output/district.csv','w',newline='') as file:
     writer = csv.writer(file)
     l=['District_id','District','State_id','Population']
     writer.writerow(l)
@@ -86,14 +86,14 @@ for d in dist:
 with open('output/district_daily.csv','w',newline='') as file:
     with open('input/districts.csv') as csv_file:
         writer = csv.writer(file)
-        writer.writerow(['Date','District_id','Confirmed','Recovered','Deceased','Other'])
+        writer.writerow(['date_1','District_id','Confirmed','Recovered','Deceased','Other'])
         csv_reader = csv.reader(csv_file, delimiter=',')
         line_count = 0
         date=''
         prev_dist_daily=[x[:] for x in dist_daily]
         for row in csv_reader:
-            # if line_count>1000:
-            #     break
+            #if line_count>1000:
+             #   break
             if line_count==0:
                 line_count=line_count+1
                 state_index=row.index('State')
@@ -144,9 +144,9 @@ with open('output/state_daily.csv','w',newline='') as file:
         date='2020-04-26'
         state_daily=[]
         # writer.writerow(['Date','State_id','State_Code','State','Confirmed','Recovered','Deceased','Tested'])
-        writer.writerow(['Date','State_id','Confirmed','Recovered','Deceased','Tested'])
+        writer.writerow(['date_1','State_id','Confirmed','Recovered','Deceased','Other','Tested'])
         for s in state:
-            state_daily.append(s+[0,0,0,0])
+            state_daily.append(s+[0,0,0,0,0])
         prev_state_daily=[x[:] for x in state_daily]
         for row in csv_reader:
             # if line_count>100000:
@@ -159,6 +159,7 @@ with open('output/state_daily.csv','w',newline='') as file:
                 confirmed_index=row.index('Confirmed')
                 recovered_index=row.index('Recovered')
                 deceased_index=row.index('Deceased')
+                other_index=row.index('Other')
             else:
                 new_date=row[date_index]                    
                 if new_date<'2020-04-26':
@@ -171,6 +172,7 @@ with open('output/state_daily.csv','w',newline='') as file:
                         l2[5]=int(state_daily[i][4])-int(prev_state_daily[i][4])
                         l2[6]=int(state_daily[i][5])-int(prev_state_daily[i][5])
                         l2[7]=int(state_daily[i][6])-int(prev_state_daily[i][6])
+                        l2[8]=int(state_daily[i][7])-int(prev_state_daily[i][7])
                         l3=l2[0:2]+l2[4:]
                         writer.writerow(l3)
                         # writer.writerow(l2)
@@ -181,8 +183,10 @@ with open('output/state_daily.csv','w',newline='') as file:
                         state_daily[i][3]=row[confirmed_index]
                         state_daily[i][4]=row[recovered_index]
                         state_daily[i][5]=row[deceased_index]
-                        state_daily[i][6]=row[tested_index]
-                        if row[tested_index]=='':
+                        state_daily[i][6]=row[other_index]
+                        state_daily[i][7]=row[tested_index]
+
+                        if row[other_index]=='':
                             state_daily[i][6]='0'
                         if row[confirmed_index]=='':
                             state_daily[i][3]='0'
@@ -190,6 +194,8 @@ with open('output/state_daily.csv','w',newline='') as file:
                             state_daily[i][4]='0'
                         if row[deceased_index]=='':
                             state_daily[i][5]='0'
+                        if row[tested_index]=='':
+                            state_daily[i][7]='0'
 
 with open('output/vaccine_daily.csv','w',newline='') as file:
     with open('input/cowin_vaccine_data_statewise.csv') as csv_file:
@@ -199,7 +205,7 @@ with open('output/vaccine_daily.csv','w',newline='') as file:
         list2=[]
         for row in csv_reader:
             if line_count==0:
-                row[0]='Date'
+                row[0]='date_1'
                 row[1]='State_id'
                 for i in range(2,len(row)):
                     for j in range(len(row[i])-1):

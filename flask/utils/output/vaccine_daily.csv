@@ -1,4 +1,4 @@
-Date,State_id,Total_Individuals_Registered,Total_Sessions_Conducted,Total_Sites ,First_Dose_Administered,Second_Dose_Administered,Male_Individuals_Vaccinated,Female_Individuals_Vaccinated,Transgender_Individuals_Vaccinated,Total_Covaxin_Administered,Total_CoviShield_Administered,Total_Individuals_Vaccinated,Total_Doses_Administered
+date_1,State_id,Total_Individuals_Registered,Total_Sessions_Conducted,Total_Sites ,First_Dose_Administered,Second_Dose_Administered,Male_Individuals_Vaccinated,Female_Individuals_Vaccinated,Transgender_Individuals_Vaccinated,Total_Covaxin_Administered,Total_CoviShield_Administered,Total_Individuals_Vaccinated,Total_Doses_Administered
 2021-01-16,0,0,0,0,0,0,0,0,0,0,0,0,0
 2021-01-16,1,6028,2,2,23,0,12,11,0,0,23,23,23
 2021-01-16,2,277023,541,339,4216,0,857,3359,0,0,4216,4216,4216
