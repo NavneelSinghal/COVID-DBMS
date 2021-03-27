@@ -56,7 +56,7 @@ let india-analysis-granularity := Days, Weeks, Months
 
 let stats-query := Maximum, Minimum
 
-let states-district-sort := Confirmed Cases, Recovered Cases, Active Cases,
+let states-district-sort := Name, Confirmed Cases, Recovered Cases, Active Cases,
 Deceased Cases
 
 
@@ -96,9 +96,6 @@ response: {
   ]
 }
 
-repeat all the above api end points for /api/states/<stateid>/
-we can also let <stateid> = India to have a uniform interface
-
 GET /api/india/liststates?sortedby=india-states-sort&sortedin=sorttype
 request: {}
 response: {
@@ -128,17 +125,52 @@ response: {
   ]
 }
 
+GET /api/states/<stateid>/summary?from=date&to=date
+request: {}
+response: {
+  key: value,
+  ...
+}
+where key = india-summary-column, value = its value
+
+GET /api/states/<stateid>/daily?type=stats-type&parameter=stats-parameter&ndays=number
+request: {}
+response: {
+  dates: [ ... ],
+  values: [ ... ]
+}
+
+GET /api/states/<stateid>/vaccine?from=date&to=date
+request: {}
+response: {
+  key: value,
+  ...
+}
+where key=india-vaccine-column, value = its value
+
+GET /api/states/<stateid>/analysis?granularity=india-analysis-granularity&from=date&
+to=date&type=stats-type&parameter=stats-parameter&query=stats-query
+request: {}
+response: {
+  ans: [
+	{
+	  key: date or week or month,
+	  value: value
+	}
+	...
+  ]
+}
+
 GET /api/states/<stateid>/listdistricts?sortedby=states-district-sort&sortedin=sorttype
 request: {}
 response: {
   states: [
 	{
-	  name: ...,
-	  stateid: ...,
-	  confirmed: ...,
-	  active: ...,
-	  recovered: ...,
-	  deceased: ...,
+	  Name: ...,
+	  Confirmed Cases: ...,
+	  Active Cases: ...,
+	  Recovered Cases: ...,
+	  Deceased Cases: ...,
 	}
 	...
   ]
