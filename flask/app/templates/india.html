@@ -12,6 +12,7 @@
   <!-- Using chart.js CDN right now, will eventually use a local copy -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" defer></script>
 
+  <script src="{{js}}/api.js" defer></script>
   <script src="{{js}}/india.js" defer></script>
 </head>
 
@@ -142,6 +143,7 @@
 	<p>
 	  Sort states by
 	  <select name="parameter">
+		<option>Name</option>
 		<option selected>Confirmed Cases</option>
 		<option>Active Cases</option>
 		<option>Recovered Cases</option>
@@ -157,7 +159,7 @@
     <table>
       <thead>
         <tr>
-          <th>State</th>
+          <th>Name</th>
 		  <th>Confirmed Cases</th>
 		  <th>Active Cases</th>
 		  <th>Recovered Cases</th>

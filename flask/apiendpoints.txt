@@ -47,7 +47,7 @@ Vaccinated, Females Vaccinated, Transgender Vaccinated, Total Sessions
 Conducted, Total Covaxin, Total Covishield, Percentage Vaccinated (first dose),
 Total Dose per lakh, First Dose per lakh, Second Dose per lakh
 
-let india-states-sort := Confirmed Cases, Recovered Cases, Active Cases,
+let india-states-sort := Name, Confirmed Cases, Recovered Cases, Active Cases,
 Deceased Cases, Tested, Vaccinated
 
 let sorttype := Ascending, Descending
@@ -104,14 +104,13 @@ request: {}
 response: {
   states: [
 	{
-	  name: ...,
-	  stateid: ...,
-	  confirmed: ...,
-	  active: ...,
-	  recovered: ...,
-	  deceased: ...,
-	  tested: ...,
-	  vaccinated: ...,
+	  Name: ...,
+	  Confirmed Cases: ...,
+	  Active Cases: ...,
+	  Recovered Cases: ...,
+	  Deceased Cases: ...,
+	  Tested: ...,
+	  Vaccinated: ...,
 	}
 	...
   ]

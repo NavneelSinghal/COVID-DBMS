@@ -1,32 +1,3 @@
-function fetchget(api, params) {
-  let urlparams = new URLSearchParams(params);
-  return fetch(`${api}?${urlparams.toString()}`, {
-	method: 'GET',
-	headers: {
-	  'Content-Type': 'application/x-www-form-urlencoded'
-	}
-  });
-}
-
-function debugflask(api, params) {
-  fetchget(api, params).then(
-	response => {
-	  if (response.ok) {
-		return response.blob();
-	  }
-	  return undefined;
-	}
-  ).then(
-	blob => {
-	  if (blob == undefined) {
-		console.log('Flask returned error (HTTP status code != 200)')
-	  } else {
-		console.log(blob);
-	  }
-	}
-  );
-}
-
 const elem = document.querySelector.bind(document);
 let sel = undefined;
 
@@ -96,6 +67,7 @@ const states = {
   refresh : sel('input[name=refresh-button]'),
   parameter: sel('select[name=parameter]'),
   order: sel('select[name=order]'),
+  tableheader: sel('thead').firstElementChild,
   tablebody: sel('tbody')
 };
 
@@ -135,26 +107,28 @@ function refreshSummary() {
 	return;
   }
 
-  fetchget('/api/india/summary', {})
-  .then(response => response.json())
-  .then(data => {
+  fetchget('/api/india/summary', {
+	from: summary.from.value,
+	to: summary.to.value
+  }).then(response => response.json()
+  ).then(data => {
 	//Clear existing table header and add new
-	console.log(data);
-	// let header = document.createElement('tr');
-	// selectedCols.forEach((column) => {
-	//   let th = document.createElement('th');
-	//   th.textContent = column;
-	//   header.append(th);
-	// });
-	// summary.tableheader.replaceChildren(header);
+	
+	let header = document.createElement('tr');
+	selectedCols.forEach((column) => {
+	  let th = document.createElement('th');
+	  th.textContent = column;
+	  header.append(th);
+	});
+	summary.tableheader.replaceChildren(header);
 
-	// let values = document.createElement('tr');
-	// selectedCols.forEach((column) => {
-	//   let td = document.createElement('td');
-	//   td.textContent = data[column];
-	//   values.append(td);
-	// });
-	// summary.tablebody.replaceChildren(values);
+	let values = document.createElement('tr');
+	selectedCols.forEach((column) => {
+	  let td = document.createElement('td');
+	  td.textContent = data[column];
+	  values.append(td);
+	});
+	summary.tablebody.replaceChildren(values);
   });
 }
 
@@ -171,11 +145,10 @@ function refreshDaily() {
   .then(response => response.json())
   .then(data => {
 	/* Refresh chart */
-	console.log(data);
-	// daily.chart.data.datasets[0].label = param;
-	// daily.chart.data.labels = data.dates;
-	// daily.chart.data.datasets[0].data = data.values;
-	// daily.chart.update();
+	daily.chart.data.datasets[0].label = param;
+	daily.chart.data.labels = data.dates;
+	daily.chart.data.datasets[0].data = data.values;
+	daily.chart.update();
   });
 }
 
@@ -192,7 +165,7 @@ function refreshVaccinations() {
   }
 
   /* We will make api call here, for now assume dummy values */
-  fetchget('/api/india/vaccine/', {
+  fetchget('/api/india/vaccine', {
 	from: vaccinations.from.value,
 	to: vaccinations.to.value
   }).then(
@@ -200,25 +173,24 @@ function refreshVaccinations() {
   ).then(
 	data => {
 	  console.log(data);
+	  //Clear existing table header and add new
+	  let header = document.createElement('tr');
+	  selectedCols.forEach((column) => {
+		let th = document.createElement('th');
+		th.textContent = column;
+		header.append(th);
+	  });
+	  vaccinations.tableheader.replaceChildren(header);
+
+	  let values = document.createElement('tr');
+	  selectedCols.forEach((column) => {
+		let td = document.createElement('td');
+		td.textContent = data[column];
+		values.append(td);
+	  });
+	  vaccinations.tablebody.replaceChildren(values);
 	}
   );
-
-  //Clear existing table header and add new
-  // let header = document.createElement('tr');
-  // selectedCols.forEach((column) => {
-	// let th = document.createElement('th');
-	// th.textContent = column;
-	// header.append(th);
-  // });
-  // vaccinations.tableheader.replaceChildren(header);
-
-  // let values = document.createElement('tr');
-  // selectedCols.forEach((column) => {
-	// let td = document.createElement('td');
-	// td.textContent = column;
-	// values.append(td);
-  // });
-  // vaccinations.tablebody.replaceChildren(values);
 }
 
 function refreshStates() {
@@ -234,21 +206,20 @@ function refreshStates() {
 	response => response.json()
   ).then(
 	data => {
-	  console.log(data);
+	  let rows = Array();
+	  data.states.forEach((state) => {
+		let row = document.createElement('tr');
+		for (let i=0; i<states.tableheader.children.length; i++) {
+		  let column = states.tableheader.children[i].textContent;
+		  let td = document.createElement('td');
+		  td.textContent = state[column];
+		  row.append(td);
+		}
+		rows.push(row);
+	  });
+	  states.tablebody.replaceChildren(...rows);
 	}
   );
-
-  // let rows = Array();
-  // for (let i=0; i<29; i++) {
-	// let row = document.createElement('tr');
-	// for (let j=0; j<7; j++) {
-	  // let td = document.createElement('td');
-	  // td.textContent = 'null';
-	  // row.append(td);
-	// }
-	// rows.push(row);
-  // }
-  // states.tablebody.replaceChildren(...rows);
 }
 
 function validateAnalysisParameter(event) {
