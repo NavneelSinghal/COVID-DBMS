@@ -60,7 +60,7 @@ let states-district-sort := Confirmed Cases, Recovered Cases, Active Cases,
 Deceased Cases
 
 
-GET /api/india/summary
+GET /api/india/summary?from=date&to=date
 request: {}
 response: {
   key: value,
