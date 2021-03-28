@@ -1,0 +1,28 @@
+div[id=tabs] {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  padding: 2em;
+}
+
+h3 {
+  text-align: center;
+}
+
+.mini-table {
+  width: initial;
+  margin: auto;
+}
+
+.mini-table input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.mini-table button {
+  width: 100%;
+}
+
+.mini-table select {
+  width: 100%;
+}

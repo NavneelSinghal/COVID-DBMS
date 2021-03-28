@@ -32,7 +32,7 @@ Recovery Ratio, Case Fatality Ratio, Test Positivity Ratio, Confirmed per lakh,
 Recovered per lakh, Active per lakh, Deceased per lakh, Other per lakh, Tested
 per lakh, Total Vaccine Doses per lakh, Population
 
-let stats-type := Daily, Cumulative
+let stats-type := Daily, Cumulative, 7-Day Moving Average
 
 let stats-parameter := Confirmed Cases, Recovered Cases, Active Cases, Deceased
 Cases, Tested, Total Vaccine Doses, Growth Rate, Active Ratio, Recovery Ratio,
@@ -187,3 +187,91 @@ response: {
 	...
   ]
 }
+
+GET /api/districts/list?stateid=number
+request: {}
+response: {
+  districts: [
+	{
+	  name: ...,
+	  districtid: ...
+	}
+	...
+  ]
+}
+
+POST /api/management/newdistrict
+request: {
+  stateid: number,
+  districtname: string
+}
+response: 
+  either HTTP 200 OK
+  or HTTP 400 with body
+  {
+	'error': 'message'
+  }
+
+POST /api/management/updatedistrict
+request: {
+  districtid: number,
+  newname: string
+}
+response: 
+  either HTTP 200 OK
+  or HTTP 400 with body
+  {
+	'error': 'message'
+  }
+
+POST /api/management/deletedistrict
+request: {
+  districtid: number,
+}
+response: 
+  either HTTP 200 OK
+  or HTTP 400 with body
+  {
+	'error': 'message'
+  }
+
+POST /api/update/newcases
+request: {
+  stateid: number,
+  districtid: number,
+  date: date,
+  confirmed: number,
+  recovered: number,
+  active: number,
+  deceased: number,
+  tested: number
+}
+response: 
+  either HTTP 200 OK
+  or HTTP 400 with body
+  {
+	'error': 'message'
+  }
+
+POST /api/update/newvaccinations
+request: {
+  stateid: number,
+  date: date,
+  sessions: number,
+  indivregistered: number,
+  males: number,
+  females: number,
+  trans: number,
+  firstdose: number,
+  seconddose: number,
+  totaldose: number,
+  covaxin: number,
+  covishield: number,
+  sites: number
+}
+response: 
+  either HTTP 200 OK
+  or HTTP 400 with body
+  {
+	'error': 'message'
+  }

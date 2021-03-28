@@ -73,24 +73,21 @@
     <p>
 	  <select name="type">
 		<option selected>Daily</option>
+		<option>7-day Moving Average</option>
 		<option>Cumulative</option>
 	  </select>
       <select name="parameter">
-		<optgroup name="both" label="Both Cumulative and Daily Measured">
 		  <option selected>Confirmed Cases</option>
 		  <option>Recovered Cases</option>
 		  <option>Active Cases</option>
 		  <option>Deceased Cases</option>
 		  <option>Tested</option>
 		  <option>Total Vaccine Doses</option>
-		</optgroup>
-		<optgroup name="cumulative" label="Only Cumulative Measured">
 		  <option>Growth Rate</option>
 		  <option>Active Ratio</option>
 		  <option>Recovery Ratio</option>
 		  <option>Test Positivity Ratio</option>
 		  <option>Fatality Ratio</option>
-		</optgroup>
       </select>
       for last
 	  <input type="number" name="ndays" min="3" max="30" value="7" step="1"/>
@@ -192,9 +189,9 @@
       <select name="type">
         <option selected>Daily/Weekly/Monthy</option>
         <option>Cumulative</option>
+        <option>7-Day Moving Average</option>
       </select>
       <select name="parameter">
-		<optgroup name="both" label="Both Cumulative and Daily Measured">
 		  <option>Confirmed Cases</option>
 		  <option>Recovered Cases</option>
 		  <option>Active Cases</option>
@@ -202,14 +199,11 @@
 		  <option>Other Cases</option>
 		  <option>Tested</option>
 		  <option>Total Vaccine Doses</option>
-		</optgroup>
-		<optgroup name="cumulative" label="Only Cumulative Measured">
 		  <option selected>Growth Rate</option>
 		  <option>Active Ratio</option>
 		  <option>Recovery Ratio</option>
 		  <option>Test Positivity Ratio</option>
 		  <option>Fatality Ratio</option>
-		</optgroup>
       </select>
       were
       <select name="query">
