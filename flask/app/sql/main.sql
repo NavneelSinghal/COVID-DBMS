@@ -14,7 +14,8 @@ sum(Total_CoviShield_Administered)over(partition by state_id order by date_1 row
 sum(Total_Doses_Administered)over(partition by state_id order by date_1 rows between unbounded preceding and current row) as cum_Total_Doses_Administered,
 sum(Total_Individuals_Vaccinated)over(partition by state_id order by date_1 rows between unbounded preceding and current row) as cum_Total_Individuals_Vaccinated
 from vaccine_daily
-order by state_id,date_1;
+-- order by state_id,date_1
+;
 
 Create Materialized View India_population as 
 Select sum(Population) as Population 
@@ -37,7 +38,8 @@ sum(cum_Total_Doses_Administered) as cum_Total_Doses_Administered,
 sum(cum_Total_Individuals_Vaccinated) as cum_Total_Individuals_Vaccinated
 from State_Vaccine_Cumulative
 group by date_1
-order by date_1;
+-- order by date_1
+;
 
 Create Materialized View State_Cumulative as 
 select *,
@@ -49,7 +51,8 @@ sum(Deceased)over(partition by state_id order by date_1 rows between unbounded p
 sum(Other)over(partition by state_id order by date_1 rows between unbounded preceding and current row) as cum_Other,
 sum(Tested)over(partition by state_id order by date_1 rows between unbounded preceding and current row) as cum_Tested
 from state_daily) as temp1
-order by state_id,date_1;
+-- order by state_id,date_1
+;
 
 
 Create Materialized View District_Cumulative as 
@@ -61,14 +64,16 @@ sum(Recovered)over(partition by district_id order by date_1 rows between unbound
 sum(Deceased)over(partition by district_id order by date_1 rows between unbounded preceding and current row) as cum_Deceased,
 sum(Other)over(partition by district_id order by date_1 rows between unbounded preceding and current row) as cum_Other
 from district_daily) as temp1
-where district_id=366
-order by District_id,date_1;
+-- where district_id=366
+-- order by District_id,date_1
+;
 
 Create Materialized View India_Cumulative as
 Select date_1,sum(cum_Confirmed) as cum_Confirmed,sum(cum_Recovered) as cum_Recovered,sum(cum_Deceased) as cum_Deceased, sum(cum_Other) as cum_Other,sum(cum_Tested) as cum_Tested, sum(Active) as active
 from State_Cumulative 
 group by date_1
-order by date_1;
+-- order by date_1
+;
 
 Create Materialized view India_Daily as 
 Select *,confirmed-Recovered-other-Deceased as active from(
@@ -76,7 +81,8 @@ Select date_1,sum(confirmed) as confirmed,sum(Recovered) as Recovered, sum(Decea
 from state_daily
 group by date_1)
 as temp1
-order by date_1;
+-- order by date_1
+;
 
 Create Materialized view India_Vaccine_daily as
 Select date_1,
@@ -94,7 +100,8 @@ sum(Total_Doses_Administered) as Total_Doses_Administered,
 sum(Total_Individuals_Vaccinated) as Total_Individuals_Vaccinated
 from vaccine_daily
 group by date_1
-order by date_1;
+-- order by date_1
+;
 
 
 

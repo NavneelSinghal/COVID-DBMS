@@ -1,0 +1,1 @@
+Select * from state_and_ut;

@@ -1,0 +1,1 @@
+Select District as "Name", district_id as "districtid" from district;
