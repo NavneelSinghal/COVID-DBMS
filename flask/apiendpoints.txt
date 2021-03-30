@@ -205,7 +205,7 @@ request: {
   stateid: number,
   districtname: string
 }
-response: 
+response:
   either HTTP 200 OK
   or HTTP 400 with body
   {
@@ -217,7 +217,7 @@ request: {
   districtid: number,
   newname: string
 }
-response: 
+response:
   either HTTP 200 OK
   or HTTP 400 with body
   {
@@ -228,7 +228,7 @@ POST /api/management/deletedistrict
 request: {
   districtid: number,
 }
-response: 
+response:
   either HTTP 200 OK
   or HTTP 400 with body
   {
@@ -246,7 +246,7 @@ request: {
   deceased: number,
   tested: number
 }
-response: 
+response:
   either HTTP 200 OK
   or HTTP 400 with body
   {
@@ -269,7 +269,7 @@ request: {
   covishield: number,
   sites: number
 }
-response: 
+response:
   either HTTP 200 OK
   or HTTP 400 with body
   {

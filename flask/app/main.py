@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, url_for
 # from flask_login import current_user
 from configparser import ConfigParser
 import datetime
+import json
 
 def correctdate(a):
     return datetime.datetime.strptime(a, "%Y-%m-%d").strftime("%d-%m-%Y")
@@ -24,6 +25,12 @@ def config(filename='app/database.ini', section='postgresql'):
     else:
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return db
+
+'''
+Helper function for default serialization
+'''
+def default_serialize(s):
+    return str(s)
 
 '''
 Helper function for query - returns (error_code, list of tuples)
@@ -61,8 +68,8 @@ def request_query(queryfile, inputs, is_update=False):
     finally:
         if connection is not None:
             connection.close()
-    print(query_output)
-    return query_output
+    # print(query_output)
+    return json.dumps(query_output, default=default_serialize)
 
 '''
 Webpage rendering
@@ -101,7 +108,6 @@ def dummy_admin_page():
 Queries
 '''
 
-# TODO: take today's date as parameter, or in the from/to date from the input
 @app.route('/api/india/summary')
 def india_summary():
     fromdate = correctdate(request.args.get('from'))
@@ -112,10 +118,9 @@ def india_summary():
 
 @app.route('/api/india/vaccine')
 def india_vaccine():
-    # print(request.args.get('from'))
-    # print(request.args.get('to'))
-    # return request_query('app/sql/dummy.sql', (request.args.get('from'), request.args.get('to')))
-    pass
+    fromdate = correctdate(request.args.get('from'))
+    todate = correctdate(request.args.get('to'))
+    return request_query('app/sql/india_vaccine_summary.sql', (fromdate, todate))
 
 # implement the remaining ones later
 

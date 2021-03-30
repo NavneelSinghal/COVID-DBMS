@@ -20,6 +20,6 @@ limit 1) as temp2)
  as temp3
 ;
 
-
-execute india_vaccine_summary('01-02-2021','10-03-2021');
-deallocate india_vaccine_summary;
+execute india_vaccine_summary(%s,%s);
+--execute india_vaccine_summary('01-02-2021','10-03-2021');
+--deallocate india_vaccine_summary;
