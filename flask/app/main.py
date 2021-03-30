@@ -3,6 +3,10 @@ import psycopg2
 from flask import Flask, render_template, request, url_for
 # from flask_login import current_user
 from configparser import ConfigParser
+import datetime
+
+def correctdate(a):
+    return datetime.datetime.strptime(a, "%Y-%m-%d").strftime("%d-%m-%Y")
 
 app = Flask(__name__)
 
@@ -30,13 +34,17 @@ def request_query(queryfile, inputs, is_update=False):
     try:
         database_parameters = config()
         connection = psycopg2.connect(**database_parameters)
-        cursor = connection.cursor()
-        cursor.execute(open(queryfile, 'r').read(), inputs)
+        cur = connection.cursor()
+        query = open(queryfile, 'r').read()
+        # print(query)
+        print('inputs:', inputs)
+        cur.execute(query, inputs)
         if is_update:
             connection.commit()
-        column_names = [desc[0] for desc in cursor.description]
+        # print(cur.description)
+        column_names = [desc[0] for desc in cur.description]
         # print(column_names)
-        query_output = cursor.fetchall()
+        query_output = cur.fetchall()
         answer = {}
         for column_name in column_names:
             answer[column_name] = []
@@ -44,7 +52,7 @@ def request_query(queryfile, inputs, is_update=False):
             for column_name, value in zip(column_names, q_out):
                 answer[column_name].append(value)
         query_output = answer
-        cursor.close()
+        cur.close()
     except psycopg2.DatabaseError as error:
         if is_update and connection is not None:
             connection.rollback()
@@ -53,6 +61,7 @@ def request_query(queryfile, inputs, is_update=False):
     finally:
         if connection is not None:
             connection.close()
+    print(query_output)
     return query_output
 
 '''
@@ -91,18 +100,22 @@ def dummy_admin_page():
 '''
 Queries
 '''
+
+# TODO: take today's date as parameter, or in the from/to date from the input
 @app.route('/api/india/summary')
 def india_summary():
-    # print(request.args.get(''))
-    return request_query('app/sql/india_summary.sql', ())
+    fromdate = correctdate(request.args.get('from'))
+    todate = correctdate(request.args.get('to'))
+    return request_query('app/sql/india_summary.sql', (fromdate, todate))
 
 # implement the middle one later
 
 @app.route('/api/india/vaccine')
 def india_vaccine():
-    print(request.args.get('from'))
-    print(request.args.get('to'))
-    return request_query('app/sql/dummy.sql', (request.args.get('from'), request.args.get('to')))
+    # print(request.args.get('from'))
+    # print(request.args.get('to'))
+    # return request_query('app/sql/dummy.sql', (request.args.get('from'), request.args.get('to')))
+    pass
 
 # implement the remaining ones later
 

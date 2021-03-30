@@ -16,5 +16,6 @@ order by date_1 desc limit 1
 ) as temp4
 ;
 
-execute india_summary('26-04-2020','10-03-2021');
-deallocate india_summary;
+execute india_summary(%s, %s);
+--execute india_summary('26-04-2020','10-03-2021');
+--deallocate india_summary;
