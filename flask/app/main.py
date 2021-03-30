@@ -94,7 +94,7 @@ Queries
 @app.route('/api/india/summary')
 def india_summary():
     # print(request.args.get(''))
-    return request_query('app/sql/dummy.sql', ())
+    return request_query('app/sql/india_summary.sql', ())
 
 # implement the middle one later
 
