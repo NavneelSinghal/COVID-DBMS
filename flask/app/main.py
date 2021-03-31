@@ -256,7 +256,7 @@ def state_listdistricts():
     stateid = request.args.get('stateid')
     sortcriteria = request.args.get('sortedby')
     order = request.args.get('sortedin')
-    ans_ret = request_query('app/sql/list_district.sql', (sortcriteria,), raw=True)
+    ans_ret = request_query('app/sql/list_district.sql', (stateid, sortcriteria), raw=True)
     ans = {}
     if order == 'Descending':
         for k, v in ans_ret.items():
