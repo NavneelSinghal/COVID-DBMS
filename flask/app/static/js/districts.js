@@ -1,15 +1,18 @@
 const elem = document.querySelector.bind(document);
 let sel = undefined;
 
+let state_ids = Array();
 let district_ids = Array();
 
 const district_select_div = elem('#district-select');
 sel = district_select_div.querySelector.bind(district_select_div);
 const district_select = {
+  state: sel('select[name=state]'),
   district: sel('select[name=district]'),
   districtid: undefined,
   button: sel('button')
 };
+district_select.state.addEventListener('change', changeState);
 district_select.button.addEventListener('click', changeDistrict);
 
 const district_name_spans = document.querySelectorAll('.district-name');
@@ -56,6 +59,41 @@ daily.chart = new Chart(daily.canvas,
   }
 );
 daily.refresh.addEventListener('click', refreshDaily);
+
+function changeState(hint) {
+  if (district_select.state.selectedIndex === -1) {
+    return;
+  }
+  let stateid = state_ids[district_select.state.selectedIndex];
+  district_select.district.disabled = true;
+  fetchget('/api/districts/list', {
+    stateid: stateid
+  }).then(
+    response => response.json()
+  ).then(
+    data => {
+      console.log(data);
+
+      district_ids.length = 0;
+      let options = Array();
+      for (let i=0; i<data['Name'].length; i++) {
+        let opt = document.createElement('option');
+        opt.textContent = data['Name'][i];
+        options.push(opt);
+        district_ids.push(data['districtid'][i]);
+      }
+      district_select.district.replaceChildren(...options);
+      district_select.district.selectedIndex = -1;
+      district_select.district.disabled = false;
+
+      let url = new URL(window.location.href);
+      if (url.searchParams.has('districtid')) {
+        district_select.district.selectedIndex = district_ids.indexOf(+url.searchParams.get('districtid'));
+        changeDistrict();
+      }
+    }
+  );
+}
 
 function changeDistrict() {
   if (district_select.district.selectedIndex === -1) {
@@ -134,29 +172,31 @@ function refreshAll() {
   refreshDaily();
 }
 
-fetchget('/api/districts/list', {})
+district_select.state.disabled = true;
+fetchget('/api/states/list', {})
 .then(response => {
   if (!response.ok)
 	return undefined;
   return response.json();
 }).then(data => {
   if (data === undefined) {
-	window.alert('Unable to fetch list of districts!');
+	window.alert('Unable to fetch list of states!');
 	return;
   }
   console.log(data);
-  for (let i=0; i<data['district'].length; i++) {
+  for (let i=0; i<data['state'].length; i++) {
 	let opt = document.createElement('option');
-	opt.textContent = data['district'][i];
-	district_select.district.append(opt);
-	district_ids.push(data['district_id'][i]);
+	opt.textContent = data['state'][i];
+	district_select.state.append(opt);
+	state_ids.push(data['state_id'][i]);
   }
+  district_select.state.disabled = false;
 
   let url = new URL(window.location.href);
-  if (url.searchParams.has('districtid')) {
-    district_select.district.selectedIndex = url.searchParams.get('districtid');
+  if (url.searchParams.has('stateid')) {
+    district_select.state.selectedIndex = state_ids.indexOf(+url.searchParams.get('stateid'));
+    changeState();
   } else {
-    district_select.district.selectedIndex = 0;
+    district_select.state.selectedIndex = -1;
   }
-  changeDistrict();
 });
