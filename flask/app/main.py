@@ -144,11 +144,11 @@ def india_daily():
     statsparam = request.args.get('parameter')
     ndays = request.args.get('ndays')
     if statstype == 'Daily':
-        ans = request_query('app/sql/india_daily_daily.sql', (ndays,), cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_daily.sql', (ndays,))#, cols=(statsparam,))
     elif statstype == 'Cumulative':
-        ans = request_query('app/sql/india_daily_cumulative.sql', (ndays,), cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_cumulative.sql', (ndays,))#, cols=(statsparam,))
     else:
-        ans = request_query('app/sql/india_daily_avg.sql', (ndays,), cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_avg.sql', (ndays,))#, cols=(statsparam,))
     return ans
 
 
@@ -168,11 +168,11 @@ def india_analysis():
     statsparam = request.args.get('parameter')
     query = request.args.get('query')  # not implemented
     if statstype == 'Daily':
-        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statstype), cols=(statsparam,))
+        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statstype))#, cols=(statsparam,))
     elif statstype == 'Cumulative':
-        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statstype), cols=(statsparam,))
+        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statstype))#, cols=(statsparam,))
     else:
-        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype), cols=(statsparam,))
+        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype))#, cols=(statsparam,))
 
 
 @app.route('/api/india/liststates')
