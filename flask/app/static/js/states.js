@@ -279,6 +279,7 @@ function refreshAll() {
   refreshAnalysis();
 }
 
+state_select.state.disabled = true;
 fetchget('/api/states/list', {})
 .then(response => {
   if (!response.ok)
@@ -296,12 +297,13 @@ fetchget('/api/states/list', {})
 	state_select.state.append(opt);
 	state_ids.push(data['state_id'][i]);
   }
+  state_select.state.disabled = false;
 
   let url = new URL(window.location.href);
   if (url.searchParams.has('stateid')) {
-    state_select.state.selectedIndex = url.searchParams.get('stateid');
-  } else {
-    state_select.state.selectedIndex = 0;
-  }
+    state_select.state.selectedIndex = state_ids.indexOf(+url.searchParams.get('stateid'));
   changeState();
+  } else {
+    state_select.state.selectedIndex = -1;
+  }
 });
