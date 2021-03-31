@@ -175,8 +175,15 @@ def india_analysis():
         return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype), cols=(statsparam,))
 
 
-# @app.route()
-# def
+@app.route('/api/india/liststates')
+def india_liststates():
+    sortcriteria = request.args.get('sortedby')
+    order = request.args.get('sortedin')
+    ans = request_query('app/sql/list_state.sql', (sortcriteria,))
+    if sortcriteria == 'Descending':
+        for k, v in ans:
+            ans[k] = reversed(v)
+    return ans
 
 '''
 Updates
