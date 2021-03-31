@@ -146,12 +146,14 @@ def india_daily():
     statsparam = request.args.get('parameter')
     ndays = request.args.get('ndays')
     if statstype == 'Daily':
-        ans = request_query('app/sql/india_daily_daily.sql', (ndays,))#, cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_daily.sql', (ndays,), raw=True)
     elif statstype == 'Cumulative':
-        ans = request_query('app/sql/india_daily_cumulative.sql', (ndays,))#, cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_cumulative.sql', (ndays,), raw=True)
     else:
-        ans = request_query('app/sql/india_daily_avg.sql', (ndays,))#, cols=(statsparam,))
-    return ans
+        ans = request_query('app/sql/india_daily_avg.sql', (ndays,), raw=True)
+    for k, v in ans.items():
+        ans[k] = list(reversed(v))
+    return json.dumps(ans, default=default_serialize)
 
 
 @app.route('/api/india/vaccine')
@@ -170,11 +172,11 @@ def india_analysis():
     statsparam = request.args.get('parameter')
     query = request.args.get('query')  # not implemented
     if statstype == 'Daily':
-        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statstype))#, cols=(statsparam,))
+        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statstype))
     elif statstype == 'Cumulative':
-        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statstype))#, cols=(statsparam,))
+        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statstype))
     else:
-        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype))#, cols=(statsparam,))
+        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype))
 
 
 @app.route('/api/india/liststates')
@@ -189,6 +191,21 @@ def india_liststates():
     else:
         ans = ans_ret
     return json.dumps(ans, default=default_serialize)
+
+
+@app.route('/api/states/list')
+def state_list():
+    return request_query('app/sql/states_list.sql', ())
+
+
+@app.route('/api/states/summary')
+def state_summary():
+    fromdate = correctdate(request.args.get('from'))
+    todate = correctdate(request.args.get('to'))
+    stateid = request.args.get('stateid')
+    return request_query('app/sql/state_summary.sql', fromdate, todate, stateid)
+
+# @app.route('')
 
 '''
 Updates
