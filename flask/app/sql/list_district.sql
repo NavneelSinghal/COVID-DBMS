@@ -1,19 +1,32 @@
-Prepare list_district(text) as 
-Select * from(
-Select district as "Name",cum_Confirmed as "Confirmed Cases", cum_Recovered as "Recovered Cases", Active as "Active Cases",cum_Deceased as "Deceased Cases" from District_Cumulative natural join district
-order by date_1 desc, district_id
-limit 801) as temp1
-order by 
-Case when $1='Name'  then "Name" end,
--- Case when $1='Name' and $2='Descending' then "Name" desc end,
-Case when $1='Confirmed Cases'  then "Confirmed Cases" end,
--- Case when $1='Confirmed Cases' and $2='Descending' then "Confirmed Cases" desc end,
-Case when $1='Recovered Cases'  then "Recovered Cases" end,
--- Case when $1='Recovered Cases' and $2='Descending' then "Recovered Cases" desc end,
-Case when $1='Deceased Cases'  then "Deceased Cases" end,
--- Case when $1='Desceased Cases' and $2='Descending' then "Desceased Cases" desc end,
-Case when $1='Active Cases'  then "Active Cases" end
--- Case when $1='Active Cases' and $2='Descending' then "Active Cases" desc end,
+PREPARE list_district(text) AS
+SELECT *
+FROM
+    (SELECT district AS "Name",
+            cum_confirmed AS "Confirmed Cases",
+            cum_recovered AS "Recovered Cases",
+            active AS "Active Cases",
+            cum_deceased AS "Deceased Cases"
+     FROM district_cumulative
+     NATURAL JOIN district
+     ORDER BY date_1 DESC, district_id
+     LIMIT 801) AS temp1
+ORDER BY CASE
+             WHEN $1='Name' THEN "Name"
+         END, -- Case when $1='Name' and $2='Descending' then "Name" desc end,
+CASE
+    WHEN $1='Confirmed Cases' THEN "Confirmed Cases"
+                                                                              END, -- Case when $1='Confirmed Cases' and $2='Descending' then "Confirmed Cases" desc end,
+CASE
+    WHEN $1='Recovered Cases' THEN "Recovered Cases"
+                                                                                                                                                                         END, -- Case when $1='Recovered Cases' and $2='Descending' then "Recovered Cases" desc end,
+CASE
+    WHEN $1='Deceased Cases' THEN "Deceased Cases"
+                                                                                                                                                                                                                                                                    END, -- Case when $1='Desceased Cases' and $2='Descending' then "Desceased Cases" desc end,
+CASE
+    WHEN $1='Active Cases' THEN "Active Cases"
+                                                                                                                                                                                                                                                                                                                                                               END -- Case when $1='Active Cases' and $2='Descending' then "Active Cases" desc end,
 ;
-execute list_district('Name');
-deallocate list_district;
+
+EXECUTE list_district(%s);
+
+--deallocate list_district;

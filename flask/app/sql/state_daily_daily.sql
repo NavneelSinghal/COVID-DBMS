@@ -1,17 +1,44 @@
-Prepare state_daily_daily(int,int) as
-Select state as "Name",date_1 as "Date",Confirmed as "Confirmed Cases",Recovered as "Recovered Cases", Active as "Active Cases",Deceased as "Deceased Cases",Other as "Other Cases", Tested as "Tested", coalesce(Total_Doses_Administered,0) as "Total Vaccine Doses" from(
-Select state,state_id,date_1,Confirmed,Recovered,Active,Deceased,Other,Tested,Total_Doses_Administered from(
-Select * from (
-Select state_daily.state_id, state_Daily.date_1,confirmed,Recovered,Deceased,other,Tested,confirmed-Recovered-Deceased-other as active,coalesce(Total_Doses_Administered,0) as Total_Doses_Administered
-from state_Daily left outer join vaccine_daily
-on state_Daily.date_1=Vaccine_daily.date_1
-and state_daily.state_id=Vaccine_daily.state_id
-) as temp1 natural join state_and_ut)
-as temp2 
-) as temp3
-where state_id=$2
-order by date_1 desc
-limit $1;
+PREPARE state_daily_daily(int,int) AS
+SELECT state AS "Name",
+       date_1 AS "Date",
+       confirmed AS "Confirmed Cases",
+       recovered AS "Recovered Cases",
+       active AS "Active Cases",
+       deceased AS "Deceased Cases",
+       other AS "Other Cases",
+       tested AS "Tested",
+       coalesce(total_doses_administered,0) AS "Total Vaccine Doses"
+FROM
+    (SELECT state,
+            state_id,
+            date_1,
+            confirmed,
+            recovered,
+            active,
+            deceased,
+            other,
+            tested,
+            total_doses_administered
+     FROM
+         (SELECT *
+          FROM
+              (SELECT state_daily.state_id,
+                      state_daily.date_1,
+                      confirmed,
+                      recovered,
+                      deceased,
+                      other,
+                      tested,
+                      confirmed-recovered-deceased-other AS active,
+                      coalesce(total_doses_administered,0) AS total_doses_administered
+               FROM state_daily
+               LEFT OUTER JOIN vaccine_daily ON state_daily.date_1=vaccine_daily.date_1
+               AND state_daily.state_id=vaccine_daily.state_id) AS temp1
+          NATURAL JOIN state_and_ut) AS temp2) AS temp3
+WHERE state_id=$2
+ORDER BY date_1 DESC
+LIMIT $1;
 
-execute state_daily_daily(5,10);
-deallocate state_daily_daily;
+EXECUTE state_daily_daily(%s,%s);
+--EXECUTE state_daily_daily(5,10);
+--DEALLOCATE state_daily_daily;

@@ -1,8 +1,9 @@
-prepare district_list_statewise(int) as
+PREPARE district_list_statewise(int) AS
+SELECT district AS "Name",
+       district_id AS "districtid"
+FROM district
+WHERE state_id =$1;
 
-Select District as "Name", district_id as "districtid" from district
-where state_id =$1;
+EXECUTE district_list_statewise(%s);
 
-execute district_list_statewise(20) ;
-deallocate district_list_statewise;
-
+--deallocate district_list_statewise;
