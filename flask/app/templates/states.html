@@ -86,6 +86,7 @@
 	  <select name="type">
 		<option selected>Daily</option>
 		<option>Cumulative</option>
+        <option>7-Day Moving Average</option>
 	  </select>
       <select name="parameter">
 		<optgroup name="both" label="Both Cumulative and Daily Measured">
@@ -189,7 +190,7 @@
     <h3>Data Analysis</h3>
     <p>
 	  Find top 3
-      <select name="granularity">
+      <select name="granularity" disabled>
         <option selected>Days</option>
         <option>Weeks</option>
         <option>Months</option>
@@ -200,8 +201,9 @@
       <input name="date-to" type="date" value="2021-03-25"/>
       when
       <select name="type">
-        <option selected>Daily/Weekly/Monthy</option>
+        <option selected>Daily</option>
         <option>Cumulative</option>
+        <option>7-Day Moving Average</option>
       </select>
       <select name="parameter">
 		<optgroup name="both" label="Both Cumulative and Daily Measured">
@@ -230,7 +232,10 @@
 
     <table>
       <thead>
-		<!-- will be generated using js -->
+        <tr>
+          <th>Date</th>
+          <th>Value</th>
+        </tr>
       </thead>
       <tbody>
 		<!-- will be generated using js -->
