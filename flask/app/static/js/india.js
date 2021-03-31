@@ -88,7 +88,9 @@ const analysis = {
 	daily: sel('optgroup[name=daily]'),
 	cumulative: sel('optgroup[name=cumulative]')
   },
-  query: sel('select[name=query]')
+  query: sel('select[name=query]'),
+  tableheader: sel('thead').firstElementChild,
+  tablebody: sel('tbody')
 };
 
 analysis.refresh.addEventListener('click', refreshAnalysis);
@@ -112,6 +114,7 @@ function refreshSummary() {
 	to: summary.to.value
   }).then(response => response.json()
   ).then(data => {
+	console.log(data);
 	//Clear existing table header and add new
 	
 	let header = document.createElement('tr');
@@ -145,9 +148,10 @@ function refreshDaily() {
   .then(response => response.json())
   .then(data => {
 	/* Refresh chart */
+	console.log(data);
 	daily.chart.data.datasets[0].label = param;
-	daily.chart.data.labels = data.dates;
-	daily.chart.data.datasets[0].data = data.values;
+	daily.chart.data.labels = data['Date'];
+	daily.chart.data.datasets[0].data = data[param];
 	daily.chart.update();
   });
 }
@@ -172,6 +176,7 @@ function refreshVaccinations() {
   ).then(
 	data => {
 	  //Clear existing table header and add new
+	  console.log(data);
 	  let header = document.createElement('tr');
 	  selectedCols.forEach((column) => {
 		let th = document.createElement('th');
@@ -204,17 +209,18 @@ function refreshStates() {
 	response => response.json()
   ).then(
 	data => {
+	  console.log(data);
 	  let rows = Array();
-	  data.states.forEach((state) => {
+	  for (let i=0; i<data['Name'].length; i++) {
 		let row = document.createElement('tr');
-		for (let i=0; i<states.tableheader.children.length; i++) {
-		  let column = states.tableheader.children[i].textContent;
+		for (let j=0; j<states.tableheader.children.length; j++) {
+		  let column = states.tableheader.children[j].textContent;
 		  let td = document.createElement('td');
-		  td.textContent = state[column];
+		  td.textContent = data[column][i];
 		  row.append(td);
 		}
 		rows.push(row);
-	  });
+	  }
 	  states.tablebody.replaceChildren(...rows);
 	}
   );
@@ -233,7 +239,6 @@ function validateAnalysisParameter(event) {
 
 function refreshAnalysis() {
   fetchget('/api/india/analysis', {
-	granularity: analysis.granularity.value,
 	from: analysis.from.value,
 	to: analysis.to.value,
 	type: analysis.type.value,
@@ -244,6 +249,18 @@ function refreshAnalysis() {
   ).then(
 	data => {
 	  console.log(data);
+
+	  let rows = Array();
+	  for (let i=0; i<data['Date'].length; i++) {
+		let tr = document.createElement('tr');
+		let td1 = document.createElement('td');
+		let td2 = document.createElement('td');
+		td1.textContent = data['Date'][i];
+		td2.textContent = data[analysis.parameter.value][i];
+		tr.replaceChildren(td1, td2);
+		rows.push(tr);
+	  }
+	  analysis.tablebody.replaceChildren(...rows);
 	}
   );
 }
