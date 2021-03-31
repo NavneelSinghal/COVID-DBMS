@@ -35,7 +35,7 @@ def default_serialize(s):
 '''
 Helper function for query - returns (error_code, list of tuples)
 '''
-def request_query(queryfile, inputs, is_update=False, to_filter=False, cols=None):
+def request_query(queryfile, inputs, is_update=False, cols=None):
     connection = None
     query_output = None
     try:
@@ -69,7 +69,7 @@ def request_query(queryfile, inputs, is_update=False, to_filter=False, cols=None
         if connection is not None:
             connection.close()
     # print(query_output)
-    if to_filter:
+    if cols is not None:
         ret = {}
         for col in cols:
             ret[col] = query_output[col]
@@ -126,11 +126,11 @@ def india_daily():
     statsparam = request.args.get('parameter')
     ndays = request.args.get('ndays')
     if statstype == 'Daily':
-        ans = request_query('app/sql/india_daily_daily.sql', (ndays,), to_filter=True, cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_daily.sql', (ndays,), cols=(statsparam,))
     elif statstype == 'Cumulative':
-        ans = request_query('app/sql/india_daily_cumulative.sql', (ndays,), to_filter=True, cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_cumulative.sql', (ndays,), cols=(statsparam,))
     else:
-        ans = request_query('app/sql/india_daily_avg.sql', (ndays,), to_filter=True, cols=(statsparam,))
+        ans = request_query('app/sql/india_daily_avg.sql', (ndays,), cols=(statsparam,))
     return ans
 
 @app.route('/api/india/vaccine')
