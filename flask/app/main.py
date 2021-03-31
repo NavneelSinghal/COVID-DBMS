@@ -119,7 +119,6 @@ def india_summary():
     todate = correctdate(request.args.get('to'))
     return request_query('app/sql/india_summary.sql', (fromdate, todate))
 
-# TODO: filter out statsparam cols
 @app.route('/api/india/daily')
 def india_daily():
     statstype = request.args.get('type')
@@ -139,7 +138,20 @@ def india_vaccine():
     todate = correctdate(request.args.get('to'))
     return request_query('app/sql/india_vaccine_summary.sql', (fromdate, todate))
 
-# implement the remaining ones later
+@app.route('/api/india/analysis')
+def india_analysis():
+    granularity = request.args.get('granularity') # dummy
+    fromdate = correctdate(request.args.get('from'))
+    todate = correctdate(request.args.get('to'))
+    statstype = request.args.get('type')
+    statsparam = request.args.get('parameter')
+    query = request.args.get('query') # not implemented
+    if statstype == 'Daily':
+        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statstype), cols=(statsparam,))
+    elif statstype == 'Cumulative':
+        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statstype), cols=(statsparam,))
+    else:
+        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype), cols=(statsparam,))
 
 '''
 Updates
