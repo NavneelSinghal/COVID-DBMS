@@ -1,4 +1,4 @@
-PREPARE india_summary(date,date) as 
+PREPARE state_summary(date,date,int) AS
 
 SELECT cum_confirmed as "Confirmed Cases",
        cum_recovered as "Recovered Cases",
@@ -33,29 +33,30 @@ FROM
   FROM
   (
     SELECT *, 1 as row_num
-    FROM india_cumulative LEFT OUTER JOIN india_vaccine_cumulative USING (date_1)
-    WHERE india_cumulative.date_1 < $1
-    ORDER BY india_cumulative.date_1 DESC
+    FROM state_cumulative LEFT OUTER JOIN state_vaccine_cumulative USING (state_id, date_1)
+    WHERE state_cumulative.state_id = $3 AND state_cumulative.date_1 < $1
+    ORDER BY state_cumulative.date_1 DESC
     LIMIT 1
   ) AS from_row
   FULL OUTER JOIN 
   (
     SELECT *, 1 as row_num
-    FROM india_cumulative LEFT OUTER JOIN india_vaccine_cumulative USING (date_1)
-    WHERE india_cumulative.date_1 <= $2
-    ORDER BY india_cumulative.date_1 DESC
+    FROM state_cumulative LEFT OUTER JOIN state_vaccine_cumulative USING (state_id, date_1)
+    WHERE state_cumulative.state_id = $3 AND state_cumulative.date_1 <= $2
+    ORDER BY state_cumulative.date_1 DESC
     LIMIT 1
   ) AS to_row
   USING (row_num)
   FULL OUTER JOIN
   (
     SELECT population, 1 AS row_num
-    FROM india_population
+    FROM state_and_ut
+    WHERE state_id = $3
   ) AS pop_table
   USING (row_num)
 ) AS temp
 ;
 
---execute india_summary(%s, %s);
--- execute india_summary('27-04-2024','10-03-2024');
--- deallocate india_summary;
+EXECUTE state_summary(%s,%s,%s);
+--EXECUTE state_summary('27-04-2020','10-03-2021',20);
+--DEALLOCATE state_summary;
