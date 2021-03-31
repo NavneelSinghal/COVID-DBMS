@@ -97,7 +97,6 @@ const analysis = {
   query: sel('select[name=query]')
 };
 analysis.refresh.addEventListener('click', refreshAnalysis);
-analysis.type.addEventListener('change', validateAnalysisParameter);
 
 function changeState() {
   if (state_select.state.selectedIndex === -1) {
@@ -270,17 +269,6 @@ function refreshAnalysis() {
 	  analysis.tablebody.replaceChildren(...rows);
 	}
   );
-}
-
-function validateAnalysisParameter(event) {
-  let val = event.target.value;
-  if (val === 'Cumulative') {
-	analysis.optgroups.daily.disabled = true;
-	analysis.optgroups.cumulative.disabled = false;
-  } else {
-	analysis.optgroups.daily.disabled = false;
-	analysis.optgroups.cumulative.disabled = true;
-  }
 }
 
 function refreshAll() {
