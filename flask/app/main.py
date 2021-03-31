@@ -45,7 +45,7 @@ Helper function for query - returns (error_code, list of tuples)
 '''
 
 
-def request_query(queryfile, inputs, is_update=False, cols=None):
+def request_query(queryfile, inputs, is_update=False, cols=None, raw=False):
     connection = None
     query_output = None
     try:
@@ -84,6 +84,8 @@ def request_query(queryfile, inputs, is_update=False, cols=None):
         for col in cols:
             ret[col] = query_output[col]
         query_output = ret
+    if raw:
+        return query_output
     return json.dumps(query_output, default=default_serialize)
 
 
@@ -179,11 +181,14 @@ def india_analysis():
 def india_liststates():
     sortcriteria = request.args.get('sortedby')
     order = request.args.get('sortedin')
-    ans = request_query('app/sql/list_state.sql', (sortcriteria,))
-    if sortcriteria == 'Descending':
-        for k, v in ans:
+    ans_ret = request_query('app/sql/list_state.sql', (sortcriteria,), raw=True)
+    ans = {}
+    if order == 'Descending':
+        for k, v in ans_ret.items():
             ans[k] = reversed(v)
-    return ans
+    else:
+        ans = ans_ret
+    return json.dumps(ans, default=default_serialize)
 
 '''
 Updates
