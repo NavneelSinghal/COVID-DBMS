@@ -1,14 +1,35 @@
-Prepare india_daily_avg(int) as 
-Select date_1 as "Date",Round(avg(confirmed) over (order by date_1 rows between 6 preceding and current row),2) as "Confirmed Cases", Round(avg(Recovered) over (order by date_1 rows between 6 preceding and current row),2) as "Recovered Cases", Round(avg(Active) over (order by date_1 rows between 6 preceding and current row),2) as "Active Cases", Round(avg(Deceased) over (order by date_1 rows between 6 preceding and current row),2) as "Deceased Cases", Round(avg(Other) over (order by date_1 rows between 6 preceding and current row),2) as "Other Cases", Round(avg(Tested) over (order by date_1 rows between 6 preceding and current row),2) as "Tested", Round(Coalesce(avg(Total_Doses_Administered) over (order by date_1 rows between 6 preceding and current row),0),2) as "Total Vaccine Doses" from (
-Select date_1,Confirmed,Recovered,Active,Deceased,Other,Tested,Total_Doses_Administered from(
-Select * from (
-Select India_Daily.date_1,confirmed,Recovered,Deceased,other,Tested,active,Total_Doses_Administered 
-from India_Daily left outer join India_Vaccine_daily
-on India_Daily.date_1=India_Vaccine_daily.date_1) as temp1, India_population)
-as temp2 )
-as temp3
-order by date_1 desc
-limit $1;
+PREPARE india_daily_avg(int) AS
+SELECT date_1 AS "Date",
+       round(avg(confirmed) OVER (
+                                  ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Confirmed Cases",
+       round(avg(recovered) OVER (
+                                  ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Recovered Cases",
+       round(avg(active) OVER (
+                               ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Active Cases",
+       round(avg(deceased) OVER (
+                                 ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Deceased Cases",
+       round(avg(other) OVER (
+                              ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Other Cases",
+       round(avg(tested) OVER (
+                               ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Tested",
+       round(coalesce(avg(total_doses_administered) OVER (
+                                                          ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),0),2) AS "Total Vaccine Doses"
+FROM
+    (SELECT date_1,
+            confirmed,
+            recovered,
+            active,
+            deceased,
+            other,
+            tested,
+            total_doses_administered from
+         (SELECT *
+          FROM
+              (SELECT india_daily.date_1,confirmed,recovered,deceased,other,tested,active,total_doses_administered
+               FROM india_daily
+               LEFT OUTER JOIN india_vaccine_daily ON india_daily.date_1=india_vaccine_daily.date_1) AS temp1, india_population) AS temp2) AS temp3
+ORDER BY date_1 DESC
+LIMIT $1;
 
-execute india_daily_avg(4);
-deallocate india_daily_avg;
+EXECUTE india_daily_avg(%d);
+--DEALLOCATE india_daily_avg;

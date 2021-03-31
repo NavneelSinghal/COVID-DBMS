@@ -1,14 +1,20 @@
-Prepare india_daily_daily(int) as
-Select date_1 as "Date",Confirmed as "Confirmed Cases",Recovered as "Recovered Cases", Active as "Active Cases",Deceased as "Deceased Cases",Other as "Other Cases", Tested as "Tested", coalesce(Total_Doses_Administered,0) as "Total Vaccine Doses" from(
-Select date_1,Confirmed,Recovered,Active,Deceased,Other,Tested,Total_Doses_Administered from(
-Select * from (
-Select India_Daily.date_1,confirmed,Recovered,Deceased,other,Tested,active,Total_Doses_Administered 
-from India_Daily left outer join India_Vaccine_daily
-on India_Daily.date_1=India_Vaccine_daily.date_1) as temp1, India_population)
-as temp2 
-) as temp3
-order by date_1 desc
-limit $1;
+PREPARE india_daily_daily(int) AS
+SELECT date_1 AS "Date",
+       confirmed AS "Confirmed Cases",
+       recovered AS "Recovered Cases",
+       active AS "Active Cases",
+       deceased AS "Deceased Cases",
+       other AS "Other Cases",
+       tested AS "Tested",
+       coalesce(total_doses_administered,0) AS "Total Vaccine Doses" from
+    (SELECT date_1,confirmed,recovered,active,deceased,other,tested,total_doses_administered from
+         (SELECT *
+          FROM
+              (SELECT india_daily.date_1,confirmed,recovered,deceased,other,tested,active,total_doses_administered
+               FROM india_daily
+               LEFT OUTER JOIN india_vaccine_daily ON india_daily.date_1=india_vaccine_daily.date_1) AS temp1, india_population) AS temp2) AS temp3
+ORDER BY date_1 DESC
+LIMIT $1;
 
-execute india_daily_daily(5);
-deallocate india_daily_daily;
+EXECUTE india_daily_daily(%d);
+--DEALLOCATE india_daily_daily;

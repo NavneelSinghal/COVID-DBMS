@@ -114,7 +114,18 @@ def india_summary():
     todate = correctdate(request.args.get('to'))
     return request_query('app/sql/india_summary.sql', (fromdate, todate))
 
-# implement the middle one later
+# TODO: filter out statsparam cols
+@app.route('/api/india/daily')
+def india_daily():
+    statstype = request.args.get('type')
+    statsparam = request.args.get('parameter')
+    ndays = request.args.get('ndays')
+    if statstype == 'Daily':
+        return request_query('app/sql/india_daily_daily.sql', (ndays,))
+    elif statstype == 'Cumulative':
+        return request_query('app/sql/india_daily_cumulative.sql', (ndays,))
+    else:
+        return request_query('app/sql/india_daily_avg.sql', (ndays,))
 
 @app.route('/api/india/vaccine')
 def india_vaccine():
