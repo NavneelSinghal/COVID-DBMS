@@ -31,5 +31,5 @@ FROM
 ORDER BY date_1 DESC
 LIMIT $1;
 
-EXECUTE india_daily_avg(%d);
+EXECUTE india_daily_avg(%s);
 --DEALLOCATE india_daily_avg;

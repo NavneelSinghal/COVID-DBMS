@@ -16,5 +16,5 @@ SELECT date_1 AS "Date",
 ORDER BY date_1 DESC
 LIMIT $1;
 
-EXECUTE india_daily_daily(%d);
+EXECUTE india_daily_daily(%s);
 --DEALLOCATE india_daily_daily;

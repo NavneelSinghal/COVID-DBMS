@@ -41,5 +41,5 @@ FROM
 ORDER BY date_1 DESC
 LIMIT $1;
 
-EXECUTE india_daily_cumulative(%d);
+EXECUTE india_daily_cumulative(%s);
 --DEALLOCATE india_daily_cumulative;
