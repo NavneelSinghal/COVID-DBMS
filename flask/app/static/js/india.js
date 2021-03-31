@@ -125,7 +125,7 @@ function refreshSummary() {
 	let values = document.createElement('tr');
 	selectedCols.forEach((column) => {
 	  let td = document.createElement('td');
-	  td.textContent = data[column];
+	  td.textContent = data[column][0];
 	  values.append(td);
 	});
 	summary.tablebody.replaceChildren(values);
@@ -164,7 +164,6 @@ function refreshVaccinations() {
 	return;
   }
 
-  /* We will make api call here, for now assume dummy values */
   fetchget('/api/india/vaccine', {
 	from: vaccinations.from.value,
 	to: vaccinations.to.value
@@ -172,7 +171,6 @@ function refreshVaccinations() {
 	response => response.json()
   ).then(
 	data => {
-	  console.log(data);
 	  //Clear existing table header and add new
 	  let header = document.createElement('tr');
 	  selectedCols.forEach((column) => {
@@ -185,7 +183,7 @@ function refreshVaccinations() {
 	  let values = document.createElement('tr');
 	  selectedCols.forEach((column) => {
 		let td = document.createElement('td');
-		td.textContent = data[column];
+		td.textContent = data[column][0];
 		values.append(td);
 	  });
 	  vaccinations.tablebody.replaceChildren(values);
