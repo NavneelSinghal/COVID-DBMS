@@ -274,6 +274,7 @@ def district_list():
     except:
         return request_query('app/sql/district_list.sql', None)
 
+
 '''
 Updates
 '''
