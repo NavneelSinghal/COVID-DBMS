@@ -65,7 +65,7 @@ ORDER BY CASE
 -- Case when $3='Recovery Ratio'  then "Recovery Ratio" end,
 -- Case when $3='Test Positivity Ratio'  then "Test Positivity Ratio" end,
 -- Case when $3='Fatality Ratio'  then "Fatality Ratio" end,
-LIMIT 1;
+LIMIT 3;
 
 EXECUTE analysis_india_daily_avg(%s, %s, %s);
 --EXECUTE analysis_india_daily_avg('01-05-2020','01-11-2020','Active Cases');

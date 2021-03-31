@@ -58,7 +58,7 @@ ORDER BY CASE
 -- Case when $3='Recovery Ratio'  then "Recovery Ratio" end,
 -- Case when $3='Test Positivity Ratio'  then "Test Positivity Ratio" end,
 -- Case when $3='Fatality Ratio'  then "Fatality Ratio" end,
-LIMIT 1;
+LIMIT 3;
 
 EXECUTE analysis_india_daily_daily(%s,%s,%s);
 

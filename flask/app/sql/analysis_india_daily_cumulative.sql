@@ -83,7 +83,7 @@ ORDER BY CASE
          CASE
              WHEN $3='Fatality Ratio' THEN "Fatality Ratio"
          END
-LIMIT 1;
+LIMIT 3;
 
 EXECUTE analysis_india_daily_cumulative(%s, %s, %s);
 --EXECUTE analysis_india_daily_cumulative('25-07-2020','21-03-2021','Active Cases');

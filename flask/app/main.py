@@ -6,14 +6,18 @@ from configparser import ConfigParser
 import datetime
 import json
 
+
 def correctdate(a):
     return datetime.datetime.strptime(a, "%Y-%m-%d").strftime("%d-%m-%Y")
+
 
 app = Flask(__name__)
 
 '''
 Helper function for parsing database details
 '''
+
+
 def config(filename='app/database.ini', section='postgresql'):
     parser = ConfigParser()
     parser.read(filename)
@@ -26,15 +30,21 @@ def config(filename='app/database.ini', section='postgresql'):
         raise Exception('Section {0} not found in the {1} file'.format(section, filename))
     return db
 
+
 '''
 Helper function for default serialization
 '''
+
+
 def default_serialize(s):
     return str(s)
+
 
 '''
 Helper function for query - returns (error_code, list of tuples)
 '''
+
+
 def request_query(queryfile, inputs, is_update=False, cols=None):
     connection = None
     query_output = None
@@ -76,18 +86,22 @@ def request_query(queryfile, inputs, is_update=False, cols=None):
         query_output = ret
     return json.dumps(query_output, default=default_serialize)
 
+
 '''
 Webpage rendering
 '''
+
 
 @app.route('/')
 @app.route('/dashboard')
 def dashboard():
     return render_template('india.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
+
 @app.route('/states')
 def state_dashboard():
     return render_template('states.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
+
 
 @app.route('/districts')
 def district_dashboard():
@@ -101,23 +115,28 @@ def district_dashboard():
 #     else:
 #         return render_template('login.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
+
 @app.route('/auth')
 def dummy_login_page():
     return render_template('login.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
+
 
 @app.route('/admin')
 def dummy_admin_page():
     return render_template('admin.html', js=url_for('static', filename='js'), css=url_for('static', filename='css'))
 
+
 '''
 Queries
 '''
+
 
 @app.route('/api/india/summary')
 def india_summary():
     fromdate = correctdate(request.args.get('from'))
     todate = correctdate(request.args.get('to'))
     return request_query('app/sql/india_summary.sql', (fromdate, todate))
+
 
 @app.route('/api/india/daily')
 def india_daily():
@@ -132,26 +151,32 @@ def india_daily():
         ans = request_query('app/sql/india_daily_avg.sql', (ndays,), cols=(statsparam,))
     return ans
 
+
 @app.route('/api/india/vaccine')
 def india_vaccine():
     fromdate = correctdate(request.args.get('from'))
     todate = correctdate(request.args.get('to'))
     return request_query('app/sql/india_vaccine_summary.sql', (fromdate, todate))
 
+
 @app.route('/api/india/analysis')
 def india_analysis():
-    granularity = request.args.get('granularity') # dummy
+    granularity = request.args.get('granularity')  # dummy
     fromdate = correctdate(request.args.get('from'))
     todate = correctdate(request.args.get('to'))
     statstype = request.args.get('type')
     statsparam = request.args.get('parameter')
-    query = request.args.get('query') # not implemented
+    query = request.args.get('query')  # not implemented
     if statstype == 'Daily':
         return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statstype), cols=(statsparam,))
     elif statstype == 'Cumulative':
         return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statstype), cols=(statsparam,))
     else:
         return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statstype), cols=(statsparam,))
+
+
+# @app.route()
+# def
 
 '''
 Updates
