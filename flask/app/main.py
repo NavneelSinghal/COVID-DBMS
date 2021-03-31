@@ -185,7 +185,7 @@ def india_liststates():
     ans = {}
     if order == 'Descending':
         for k, v in ans_ret.items():
-            ans[k] = reversed(v)
+            ans[k] = list(reversed(v))
     else:
         ans = ans_ret
     return json.dumps(ans, default=default_serialize)
