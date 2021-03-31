@@ -176,7 +176,7 @@
     <h3>Data Analysis</h3>
     <p>
 	  Find top 3
-      <select name="granularity">
+      <select name="granularity" disabled>
         <option selected>Days</option>
         <option>Weeks</option>
         <option>Months</option>
@@ -187,19 +187,19 @@
       <input name="date-to" type="date" value="2021-03-25"/>
       when
       <select name="type">
-        <option selected>Daily/Weekly/Monthy</option>
+        <option selected>Daily</option>
         <option>Cumulative</option>
         <option>7-Day Moving Average</option>
       </select>
       <select name="parameter">
-		  <option>Confirmed Cases</option>
+		  <option selected>Confirmed Cases</option>
 		  <option>Recovered Cases</option>
 		  <option>Active Cases</option>
 		  <option>Deceased Cases</option>
 		  <option>Other Cases</option>
 		  <option>Tested</option>
 		  <option>Total Vaccine Doses</option>
-		  <option selected>Growth Rate</option>
+		  <option>Growth Rate</option>
 		  <option>Active Ratio</option>
 		  <option>Recovery Ratio</option>
 		  <option>Test Positivity Ratio</option>
@@ -214,7 +214,10 @@
 
     <table>
       <thead>
-		<!-- will be generated using js -->
+		<tr>
+		  <th>Date</th>
+		  <th>Value</th>
+		</tr>
       </thead>
       <tbody>
 		<!-- will be generated using js -->
