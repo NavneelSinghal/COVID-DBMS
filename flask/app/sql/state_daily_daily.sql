@@ -7,7 +7,11 @@ SELECT state AS "Name",
        deceased AS "Deceased Cases",
        other AS "Other Cases",
        tested AS "Tested",
-       coalesce(total_doses_administered,0) AS "Total Vaccine Doses"
+       coalesce(total_doses_administered,0) AS "Total Vaccine Doses",
+        round(active::decimal/nullif(confirmed,0),2) as "Active Ratio",
+        round(recovered:: decimal/nullif(confirmed,0),2) as "Recovery Ratio",
+        round(confirmed:: decimal/nullif(tested,0),2) as "Test Positivity Ratio",
+        round(deceased::decimal/nullif(confirmed,0),2) as "Fatality Ratio"
 FROM
     (SELECT state,
             state_id,
@@ -39,6 +43,6 @@ WHERE state_id=$2
 ORDER BY date_1 DESC
 LIMIT $1;
 
-EXECUTE state_daily_daily(%s,%s);
---EXECUTE state_daily_daily(5,10);
---DEALLOCATE state_daily_daily;
+-- EXECUTE state_daily_daily(%s,%s);
+EXECUTE state_daily_daily(5,10);
+DEALLOCATE state_daily_daily;

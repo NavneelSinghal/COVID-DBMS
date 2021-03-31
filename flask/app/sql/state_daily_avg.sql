@@ -15,7 +15,20 @@ SELECT state AS "Name",
        round(avg(tested) OVER (PARTITION BY state
                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Tested",
        round(coalesce(avg(total_doses_administered) OVER (PARTITION BY state
-                                                          ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),0),2) AS "Total Vaccine Doses"
+                                                          ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),0),2) AS "Total Vaccine Doses",
+        round(round(avg(active) OVER (PARTITION BY state
+                                    ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(confirmed) OVER (PARTITION BY state
+                                       ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Active Ratio",
+        round(round(avg(recovered) OVER (PARTITION BY state
+                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(confirmed) OVER (PARTITION BY state
+                                    ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Recovery Ratio",
+        round(round(avg(deceased) OVER (PARTITION BY state
+                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(confirmed) OVER (PARTITION BY state
+                                    ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Fatality Ratio",
+        round(round(avg(confirmed) OVER (PARTITION BY state
+                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(tested) OVER (PARTITION BY state
+                                       ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Test Positivity Ratio"
+
 FROM
     (SELECT state,
             state_id,

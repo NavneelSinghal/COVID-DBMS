@@ -13,7 +13,20 @@ SELECT date_1 AS "Date",
        round(avg(tested) OVER (
                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2) AS "Tested",
        round(coalesce(avg(total_doses_administered) OVER (
-                                                          ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),0),2) AS "Total Vaccine Doses"
+                                                          ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),0),2) AS "Total Vaccine Doses",
+        round((avg(active) OVER (
+                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW)/nullif(avg(confirmed) OVER (
+                                       ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),0)),2) as "Active Ratio",
+        round(round(avg(recovered) OVER (
+                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(confirmed) OVER (
+                                    ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Recovery Ratio",
+        round(round(avg(deceased) OVER (
+                                ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(confirmed) OVER (
+                                    ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Fatality Ratio",
+        round(round(avg(confirmed) OVER (
+                                    ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2)/nullif(round(avg(tested) OVER (
+                                       ORDER BY date_1 ROWS BETWEEN 6 preceding AND CURRENT ROW),2),0.00),2) as "Test Positivity Ratio"
+
 FROM
     (SELECT date_1,
             confirmed,

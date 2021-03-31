@@ -1,4 +1,4 @@
-PREPARE analysis_india_daily_cumulative(date,date,text) AS
+PREPARE analysis_india_daily_cumulative(date,date,text,text) AS
 SELECT *
 FROM
     (SELECT date_1 AS "Date",
@@ -51,40 +51,73 @@ FROM
      WHERE date_1>=$1
          AND date_1<=$2) AS temp4
 ORDER BY CASE
-             WHEN $3='Confirmed Cases' THEN "Confirmed Cases"
+             WHEN $3='Confirmed Cases' and $4= 'ASC' THEN "Confirmed Cases"
          END,
          CASE
-             WHEN $3='Recovered Cases' THEN "Recovered Cases"
+             WHEN $3='Confirmed Cases' and $4= 'DSC' THEN "Confirmed Cases" 
+         END desc,
+         CASE
+             WHEN $3='Recovered Cases' and $4= 'ASC' THEN "Recovered Cases"
          END,
          CASE
-             WHEN $3='Deceased Cases' THEN "Deceased Cases"
+             WHEN $3='Recovered Cases' and $4= 'DSC' THEN "Recovered Cases" 
+         END desc,
+         CASE
+             WHEN $3='Deceased Cases' and $4= 'ASC' THEN "Deceased Cases"
          END,
          CASE
-             WHEN $3='Active Cases' THEN "Active Cases"
+             WHEN $3='Deceased Cases' and $4= 'DSC' THEN "Deceased Cases" 
+         END desc,
+         CASE
+             WHEN $3='Active Cases' and $4= 'ASC' THEN "Active Cases"
          END,
          CASE
-             WHEN $3='Other Cases' THEN "Other Cases"
+             WHEN $3='Active Cases' and $4= 'DSC' THEN "Active Cases" 
+         END desc,
+         CASE
+             WHEN $3='Other Cases' and $4= 'ASC' THEN "Other Cases"
          END,
          CASE
-             WHEN $3='Tested' THEN "Tested"
+             WHEN $3='Other Cases' and $4= 'DSC' THEN "Other Cases" 
+         END desc,
+         CASE
+             WHEN $3='Tested' and $4= 'ASC' THEN "Tested"
          END,
          CASE
-             WHEN $3='Total Vaccine Doses' THEN "Total Vaccine Doses"
+             WHEN $3='Tested' and $4= 'DSC' THEN "Tested" 
+         END desc,
+         CASE
+             WHEN $3='Total Vaccine Doses' and $4= 'ASC' THEN "Total Vaccine Doses"
          END,
          CASE
-             WHEN $3='Active Ratio' THEN "Active Ratio"
+             WHEN $3='Total Vaccine Doses' and $4= 'DSC' THEN "Total Vaccine Doses" 
+         END desc,
+         CASE
+             WHEN $3='Active Ratio' and $4='ASC' THEN "Active Ratio"
          END,
          CASE
-             WHEN $3='Recovery Ratio' THEN "Recovery Ratio"
+             WHEN $3='Active Ratio' and $4='DSC' THEN "Active Ratio" 
+         END desc,
+         CASE
+             WHEN $3='Recovery Ratio' and $4= 'ASC' THEN "Recovery Ratio"
          END,
          CASE
-             WHEN $3='Test Positivity Ratio' THEN "Test Positivity Ratio"
+             WHEN $3='Recovery Ratio' and $4= 'DSC' THEN "Recovery Ratio" 
+         END desc,
+         CASE
+             WHEN $3='Test Positivity Ratio' and $4='ASC' THEN "Test Positivity Ratio"
          END,
          CASE
-             WHEN $3='Fatality Ratio' THEN "Fatality Ratio"
-         END
-LIMIT 3;
+             WHEN $3='Test Positivity Ratio' and $4='DSC' THEN "Test Positivity Ratio" 
+         END desc,
+         CASE
+             WHEN $3='Fatality Ratio' and $4= 'ASC' THEN "Fatality Ratio"
+         END,
+         CASE
+             WHEN $3='Fatality Ratio' and $4= 'DSC' THEN "Fatality Ratio" 
+         END desc
+LIMIT 30;
 
-EXECUTE analysis_india_daily_cumulative(%s, %s, %s);
---EXECUTE analysis_india_daily_cumulative('25-07-2020','21-03-2021','Active Cases');
---DEALLOCATE analysis_india_daily_cumulative;
+EXECUTE analysis_india_daily_cumulative(%s, %s, %s,%s);
+-- EXECUTE analysis_india_daily_cumulative('25-05-2020','21-03-2021','Active Ratio','DSC');
+-- DEALLOCATE analysis_india_daily_cumulative;

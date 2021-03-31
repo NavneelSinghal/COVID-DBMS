@@ -6,7 +6,12 @@ SELECT date_1 AS "Date",
        deceased AS "Deceased Cases",
        other AS "Other Cases",
        tested AS "Tested",
-       coalesce(total_doses_administered,0) AS "Total Vaccine Doses" from
+       coalesce(total_doses_administered,0) AS "Total Vaccine Doses",
+       round(active/nullif(confirmed,0),2) as "Active Ratio",
+        round(recovered/nullif(confirmed,0),2) as "Recovery Ratio",
+        round(confirmed/nullif(tested,0),2) as "Test Positivity Ratio",
+        round(deceased/nullif(confirmed,0),2) as "Fatality Ratio"
+        from
     (SELECT date_1,confirmed,recovered,active,deceased,other,tested,total_doses_administered from
          (SELECT *
           FROM
