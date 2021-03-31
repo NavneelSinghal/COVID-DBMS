@@ -275,3 +275,12 @@ response:
   {
 	'error': 'message'
   }
+ 
+POST /api/update/refreshfull
+request: {}
+response:
+  either HTTP 200 OK
+  or HTTP 400 with body
+  {
+	'error': 'message'
+  }

@@ -26,7 +26,7 @@
   </nav>
 
   <div id="tabs">
-	<input type="radio" name="tab" id="update-tab-radio" value="update" selected/>
+	<input type="radio" name="tab" id="update-tab-radio" value="update" checked/>
 	<label for="update-tab-radio">Update Data</label>
 
 <!-- 	<input type="radio" name="tab" id="transfer-tab-radio" value="transfer" disabled/> -->
@@ -35,6 +35,11 @@
 	<input type="radio" name="tab" id="management-tab-radio" value="management"/>
 	<label for="management-tab-radio">Management</label>
   </div>
+  
+  <p><b>Note</b> any changes made in the database will not be reflected in
+  *most* of the queries <i>until</i> you refresh the database with the new
+  changes. Refreshing database triggers re-build (refresh) of all
+  materialized views to reflect the latest changes<p>
 
   <div id="update-tab">
 	<h3>Update cases</h3>
@@ -170,6 +175,14 @@
 		</td>
 	  </tr>
 	</table>
+
+	<h3>Refresh database now</h3>
+	<table id="sync-views" class="mini-table">
+	  <tr>
+        <td><button>Sync Now</button></td>
+	  </tr>
+	</table>
+
   </div>
 
   <div id="management-tab">
