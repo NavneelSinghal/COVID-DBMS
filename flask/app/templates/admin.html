@@ -9,13 +9,18 @@
   <meta name="author" content="navneel-piyush-sarthak">
   <link rel="stylesheet" href="{{css}}/main.css">
   <link rel="stylesheet" href="{{css}}/admin.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather&display=swap" rel="stylesheet"> 
 
   <script src="{{js}}/api.js" defer></script>
   <script src="{{js}}/admin.js" defer></script>
 </head>
 
 <body>
-  <h2 class="title">Admin Panel</h2>
+  <h2 class="title">
+    <img src="/static/img/virus.png" class="icon"/>
+    Covid-19 Admin Panel
+  </h2>
   <nav>
     <a href="/dashboard">Dashboard</a>
     <a href="/states">State-wise</a>
@@ -64,25 +69,25 @@
 		<td>Confirmed Cases</td>
 		<td></td>
 		<td></td>
-		<td><input type="number" name="Confirmed Cases"/></td>
+		<td><input type="number" value=0 name="Confirmed Cases"/></td>
 	  </tr>
 	  <tr name="Recovered Cases">
 		<td>Recovered Cases</td>
 		<td></td>
 		<td></td>
-		<td><input type="number" name="Recovered Cases"/></td>
+		<td><input type="number" value=0 name="Recovered Cases"/></td>
 	  </tr>
 	  <tr name="Deceased Cases">
 		<td>Deceased Cases</td>
 		<td></td>
 		<td></td>
-		<td><input type="number" name="Deceased Cases"/></td>
+		<td><input type="number" value=0 name="Deceased Cases"/></td>
 	  </tr>
 	  <tr name="Tested">
 		<td>Tested</td>
 		<td></td>
 		<td></td>
-		<td><input type="number" name="Tested"/></td>
+		<td><input type="number" value=0 name="Tested"/></td>
 	  </tr>
 	  <tr>
 		<td colspan="4">
@@ -109,57 +114,57 @@
 	  <tr name="Total Sessions Conducted">
 		<td>Total Sessions Conducted</td>
 		<td></td>
-		<td><input type="number" name="Total Sessions Conducted"/></td>
+		<td><input type="number" value=0 name="Total Sessions Conducted"/></td>
 	  </tr>
 	  <tr name="Total Individuals Registered">
 		<td>Total Individuals Registered</td>
 		<td></td>
-		<td><input type="number" name="Total Individuals Registered"/></td>
+		<td><input type="number" value=0 name="Total Individuals Registered"/></td>
 	  </tr>
 	  <tr name="Total Males Vaccinated">
 		<td>Total Males Vaccinated</td>
 		<td></td>
-		<td><input type="number" name="Total Males Vaccinated"/></td>
+		<td><input type="number" value=0 name="Total Males Vaccinated"/></td>
 	  </tr>
 	  <tr name="Total Females Vaccinated">
 		<td>Total Females Vaccinated</td>
 		<td></td>
-		<td><input type="number" name="Total Females Vaccinated"/></td>
+		<td><input type="number" value=0 name="Total Females Vaccinated"/></td>
 	  </tr>
 	  <tr name="Total Transgender Vaccinated">
 		<td>Total Transgender Vaccinated</td>
 		<td></td>
-		<td><input type="number" name="Total Transgender Vaccinated"/></td>
+		<td><input type="number" value=0 name="Total Transgender Vaccinated"/></td>
 	  </tr>
 	  <tr name="Total First Dose">
 		<td>Total First Dose</td>
 		<td></td>
-		<td><input type="number" name="Total First Dose"/></td>
+		<td><input type="number" value=0 name="Total First Dose"/></td>
 	  </tr>
 	  <tr name="Total Second Dose">
 		<td>Total Second Dose</td>
 		<td></td>
-		<td><input type="number" name="Total Second Dose"/></td>
+		<td><input type="number" value=0 name="Total Second Dose"/></td>
 	  </tr>
 	  <tr name="Total Doses">
 		<td>Total Doses</td>
 		<td></td>
-		<td><input type="number" name="Total Doses"/></td>
+		<td><input type="number" value=0 name="Total Doses"/></td>
 	  </tr>
 	  <tr name="Total Covaxin">
 		<td>Total Covaxin</td>
 		<td></td>
-		<td><input type="number" name="Total Covaxin"/></td>
+		<td><input type="number" value=0 name="Total Covaxin"/></td>
 	  </tr>
 	  <tr name="Total Covishield">
 		<td>Total Covishield</td>
 		<td></td>
-		<td><input type="number" name="Total Covishield"/></td>
+		<td><input type="number" value=0 name="Total Covishield"/></td>
 	  </tr>
 	  <tr name="Total Sites">
 		<td>Total Sites</td>
 		<td></td>
-		<td><input type="number" name="Total Sites"/></td>
+		<td><input type="number" value=0 name="Total Sites"/></td>
 	  </tr>
 	  <tr>
 		<td colspan="4">
@@ -190,7 +195,7 @@
 	  </tr>
 	  <tr>
 		<td>Population</td>
-		<td><input name="population" type="number"/></td>
+		<td><input name="population" type="number" value=0/></td>
 	  </tr>
 	  <tr>
 		<td colspan=2><button>Add</button></td>

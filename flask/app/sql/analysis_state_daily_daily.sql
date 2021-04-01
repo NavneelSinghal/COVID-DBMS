@@ -110,7 +110,7 @@ ORDER BY CASE
          CASE
              WHEN $4='Fatality Ratio' and $5= 'DSC' THEN "Fatality Ratio" 
          END desc
-LIMIT 300;
+LIMIT 3;
 
 EXECUTE analysis_state_daily_daily(%s, %s, %s, %s, %s);
 --execute analysis_state_daily_daily(17,'01-05-2020','01-11-2020','Active Cases','ASC');
