@@ -1,5 +1,4 @@
 Prepare india_vaccine_summary(date,date) as
-
 Select cum_Total_Doses_Administered as "Total Dose",
        cum_First_Dose_Administered as "First Dose",
        cum_Second_Dose_Administered as "Second Dose",
@@ -28,28 +27,31 @@ from(
          round(cum_First_Dose_Administered/population*100000,2) as a3,
          round(cum_Second_Dose_Administered/population*100000,2) as a4
   from(
-    Select 
-    cum_Total_Doses_Administered-lag(cum_Total_Doses_Administered) over( order by date_1) as cum_Total_Doses_Administered,
-    cum_First_Dose_Administered-lag(cum_First_Dose_Administered) over(order by date_1) as cum_First_Dose_Administered,
-    cum_Second_Dose_Administered-lag(cum_Second_Dose_Administered) over(order by date_1) as cum_Second_Dose_Administered,
-    cum_Male_Individuals_Vaccinated-lag(cum_Male_Individuals_Vaccinated) over(order by date_1) as cum_Male_Individuals_Vaccinated,
-    cum_Female_Individuals_Vaccinated-lag(cum_Female_Individuals_Vaccinated) over(order by date_1) as cum_Female_Individuals_Vaccinated,
-    cum_Transgender_Individuals_Vaccinated-lag(cum_Transgender_Individuals_Vaccinated) over(order by date_1) as cum_Transgender_Individuals_Vaccinated,
-    cum_Total_Sessions_Conducted-lag(cum_Total_Sessions_Conducted) over(order by date_1) as cum_Total_Sessions_Conducted,
-    cum_Total_Covaxin_Administered-lag(cum_Total_Covaxin_Administered) over(order by date_1) as cum_Total_Covaxin_Administered,
-    cum_Total_CoviShield_Administered-lag(cum_Total_CoviShield_Administered) over(order by date_1) as cum_Total_CoviShield_Administered,
-    population
-    from(
-      Select *
-      from India_Vaccine_Cumulative,India_population
-      where date_1=$1 or date_1=$2
-    ) as temp1
-    order by date_1 desc
-    limit 1
-  ) as temp2
-) as temp3
+Select 
+Coalesce(to_row.cum_Total_Doses_Administered,0)-coalesce(from_row.cum_Total_Doses_Administered,0) as cum_Total_Doses_Administered,
+Coalesce(to_row.cum_First_Dose_Administered,0)-coalesce(from_row.cum_First_Dose_Administered,0) as cum_First_Dose_Administered,
+Coalesce(to_row.cum_Second_Dose_Administered,0)-coalesce(from_row.cum_Second_Dose_Administered,0) as cum_Second_Dose_Administered,
+Coalesce(to_row.cum_Male_Individuals_Vaccinated,0)-coalesce(from_row.cum_Male_Individuals_Vaccinated,0) as cum_Male_Individuals_Vaccinated,
+Coalesce(to_row.cum_Female_Individuals_Vaccinated,0)-coalesce(from_row.cum_Female_Individuals_Vaccinated,0) as cum_Female_Individuals_Vaccinated,
+Coalesce(to_row.cum_Transgender_Individuals_Vaccinated,0)-coalesce(from_row.cum_Transgender_Individuals_Vaccinated,0) as cum_Transgender_Individuals_Vaccinated,
+Coalesce(to_row.cum_Total_Sessions_Conducted,0)-coalesce(from_row.cum_Total_Sessions_Conducted,0) as cum_Total_Sessions_Conducted,
+Coalesce(to_row.cum_Total_Covaxin_Administered,0)-coalesce(from_row.cum_Total_Covaxin_Administered,0) as cum_Total_Covaxin_Administered,
+Coalesce(to_row.cum_Total_CoviShield_Administered,0)-coalesce(from_row.cum_Total_CoviShield_Administered,0) as cum_Total_CoviShield_Administered,
+population from
+(Select *,1 as row_num from india_vaccine_cumulative
+where date_1<$1 
+order by date_1 desc
+limit 1) as from_row full outer join 
+(Select *,1 as row_num from india_vaccine_cumulative
+where date_1<=$2
+order by date_1 desc
+limit 1) as to_row using(row_num)
+full outer join
+(Select population,1 as row_num from India_population) as pop_table 
+using (row_num) ) as temp1 ) as temp2
+
 ;
 
-execute india_vaccine_summary(%s, %s);
---execute india_vaccine_summary('01-02-2021','10-03-2021');
---deallocate india_vaccine_summary;
+execute india_vaccine_summary(%s,%s);
+-- execute india_vaccine_summary('01-02-2021','10-03-2021');
+-- deallocate india_vaccine_summary;

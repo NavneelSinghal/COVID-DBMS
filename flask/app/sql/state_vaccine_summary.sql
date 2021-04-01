@@ -1,5 +1,5 @@
 PREPARE state_vaccine_summary(date,date,int) AS
-SELECT state AS "Name",
+SELECT
        cum_total_doses_administered AS "Total Dose",
        cum_first_dose_administered AS "First Dose",
        cum_second_dose_administered AS "Second Dose",
@@ -14,7 +14,7 @@ SELECT state AS "Name",
        a3 AS "First Dose per lakh",
        a4 AS "Second Dose per lakh"
 FROM
-    (SELECT state,
+    (SELECT 
             cum_total_doses_administered,
             cum_first_dose_administered,
             cum_second_dose_administered,
@@ -29,37 +29,45 @@ FROM
             round(cum_first_dose_administered/nullif(population,0)*100000,2) AS a3,
             round(cum_second_dose_administered/nullif(population,0)*100000,2) AS a4
      FROM
-         (SELECT state_id,
-                 state,
-                 cum_total_doses_administered-lag(cum_total_doses_administered) over(PARTITION BY state_id
-                                                                                     ORDER BY date_1) AS cum_total_doses_administered,
-                 cum_first_dose_administered-lag(cum_first_dose_administered) over(PARTITION BY state_id
-                                                                                   ORDER BY date_1) AS cum_first_dose_administered,
-                 cum_second_dose_administered-lag(cum_second_dose_administered) over(PARTITION BY state_id
-                                                                                     ORDER BY date_1) AS cum_second_dose_administered,
-                 cum_male_individuals_vaccinated-lag(cum_male_individuals_vaccinated) over(PARTITION BY state_id
-                                                                                           ORDER BY date_1) AS cum_male_individuals_vaccinated,
-                 cum_female_individuals_vaccinated-lag(cum_female_individuals_vaccinated) over(PARTITION BY state_id
-                                                                                               ORDER BY date_1) AS cum_female_individuals_vaccinated,
-                 cum_transgender_individuals_vaccinated-lag(cum_transgender_individuals_vaccinated) over(PARTITION BY state_id
-                                                                                                         ORDER BY date_1) AS cum_transgender_individuals_vaccinated,
-                 cum_total_sessions_conducted-lag(cum_total_sessions_conducted) over(PARTITION BY state_id
-                                                                                     ORDER BY date_1) AS cum_total_sessions_conducted,
-                 cum_total_covaxin_administered-lag(cum_total_covaxin_administered) over(PARTITION BY state_id
-                                                                                         ORDER BY date_1) AS cum_total_covaxin_administered,
-                 cum_total_covishield_administered-lag(cum_total_covishield_administered) over(PARTITION BY state_id
-                                                                                               ORDER BY date_1) AS cum_total_covishield_administered,
-                 population
+         (SELECT from_row.state_id,
+                 Coalesce(to_row.cum_Total_Doses_Administered,0)-coalesce(from_row.cum_Total_Doses_Administered,0) as cum_Total_Doses_Administered,
+                Coalesce(to_row.cum_First_Dose_Administered,0)-coalesce(from_row.cum_First_Dose_Administered,0) as cum_First_Dose_Administered,
+                Coalesce(to_row.cum_Second_Dose_Administered,0)-coalesce(from_row.cum_Second_Dose_Administered,0) as cum_Second_Dose_Administered,
+                Coalesce(to_row.cum_Male_Individuals_Vaccinated,0)-coalesce(from_row.cum_Male_Individuals_Vaccinated,0) as cum_Male_Individuals_Vaccinated,
+                Coalesce(to_row.cum_Female_Individuals_Vaccinated,0)-coalesce(from_row.cum_Female_Individuals_Vaccinated,0) as cum_Female_Individuals_Vaccinated,
+                Coalesce(to_row.cum_Transgender_Individuals_Vaccinated,0)-coalesce(from_row.cum_Transgender_Individuals_Vaccinated,0) as cum_Transgender_Individuals_Vaccinated,
+                Coalesce(to_row.cum_Total_Sessions_Conducted,0)-coalesce(from_row.cum_Total_Sessions_Conducted,0) as cum_Total_Sessions_Conducted,
+                Coalesce(to_row.cum_Total_Covaxin_Administered,0)-coalesce(from_row.cum_Total_Covaxin_Administered,0) as cum_Total_Covaxin_Administered,
+                Coalesce(to_row.cum_Total_CoviShield_Administered,0)-coalesce(from_row.cum_Total_CoviShield_Administered,0) as cum_Total_CoviShield_Administered,
+                population
           FROM
-              (SELECT *
-               FROM state_vaccine_cumulative
-               NATURAL JOIN state_and_ut
-               WHERE date_1=$1
-                   OR date_1=$2) AS temp1
-          ORDER BY date_1 DESC
-          LIMIT 37) AS temp2
-     WHERE state_id=$3) AS temp3;
+          (
+    SELECT *, 1 as row_num
+    FROM state_cumulative LEFT OUTER JOIN state_vaccine_cumulative USING (state_id, date_1)
+    WHERE state_cumulative.state_id = $3 AND state_cumulative.date_1 < $1
+    ORDER BY state_cumulative.date_1 DESC
+    LIMIT 1
+  ) AS from_row
+  FULL OUTER JOIN 
+  (
+    SELECT *, 1 as row_num
+    FROM state_cumulative LEFT OUTER JOIN state_vaccine_cumulative USING (state_id, date_1)
+    WHERE state_cumulative.state_id = $3 AND state_cumulative.date_1 <= $2
+    ORDER BY state_cumulative.date_1 DESC
+    LIMIT 1
+  ) AS to_row
+  USING (row_num)
+  FULL OUTER JOIN
+  (
+    SELECT population, 1 AS row_num
+    FROM state_and_ut
+    WHERE state_id = $3
+  ) AS pop_table
+  USING (row_num)
+         ) as temp1
+    ) AS temp2
+;
 
 EXECUTE state_vaccine_summary(%s, %s, %s);
---EXECUTE state_vaccine_summary('01-02-2021','10-03-2021',23);
---DEALLOCATE state_vaccine_summary;
+-- EXECUTE state_vaccine_summary2('01-02-2022','10-03-2022',23);
+-- DEALLOCATE state_vaccine_summary2;
