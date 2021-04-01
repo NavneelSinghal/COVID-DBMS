@@ -1,16 +1,15 @@
-Prepare vaccine_values(int,date) as
-Select Total_Doses_Administered as "Total Dose",
-    First_Dose_Administered as "First Dose",
-    Second_Dose_Administered as "Second Dose",
-    Male_Individuals_Vaccinated as "Male Vaccinated",
-    Female_Individuals_Vaccinated as "Female Vaccinated",
-    Transgender_Individuals_Vaccinated as "Transgender Vaccinated",
-    Total_Sessions_Conducted as "Total Sessions Conducted",
-    Total_Covaxin_Administered as "Total Covaxin",
-    Total_CoviShield_Administered as "Total Covishield"
- from vaccine_daily
-where state_id=$1
-and date_1=$2
-;
+PREPARE vaccine_values(int,date) AS
+SELECT total_doses_administered AS "Total Dose",
+       first_dose_administered AS "First Dose",
+       second_dose_administered AS "Second Dose",
+       male_individuals_vaccinated AS "Male Vaccinated",
+       female_individuals_vaccinated AS "Female Vaccinated",
+       transgender_individuals_vaccinated AS "Transgender Vaccinated",
+       total_sessions_conducted AS "Total Sessions Conducted",
+       total_covaxin_administered AS "Total Covaxin",
+       total_covishield_administered AS "Total Covishield"
+FROM vaccine_daily
+WHERE state_id=$1
+    AND date_1=$2 ;
 
-execute vaccine_values(%s,%s);
+EXECUTE vaccine_values(%s,%s);

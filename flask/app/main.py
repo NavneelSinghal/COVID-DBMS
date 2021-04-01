@@ -175,9 +175,9 @@ def india_analysis():
     statsparam = request.args.get('parameter')
     query = request.args.get('query')
     if query == 'Maximum':
-    	query = 'DSC'
+        query = 'DSC'
     else:
-    	query = 'ASC'
+        query = 'ASC'
     if statstype == 'Daily':
         return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statsparam, query))
     elif statstype == 'Cumulative':
@@ -248,9 +248,9 @@ def state_analysis():
     statsparam = request.args.get('parameter')
     query = request.args.get('query')
     if query == 'Maximum':
-    	query = 'DSC'
+        query = 'DSC'
     else:
-    	query = 'ASC'
+        query = 'ASC'
     if statstype == 'Daily':
         return request_query('app/sql/analysis_state_daily_daily.sql', (stateid, fromdate, todate, statsparam, query))
     elif statstype == 'Cumulative':
@@ -326,7 +326,7 @@ def state_values():
 def state_vaccinevalues():
     stateid = request.args.get('stateid')
     date = request.args.get('date')
-    return request_query('app/sql/state_vaccine_summary.sql', (stateid, date))
+    return request_query('app/sql/vaccine_values.sql', (stateid, date))
 
 
 '''
