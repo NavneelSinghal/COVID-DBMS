@@ -67,8 +67,8 @@ Create table vaccine_daily(
 -- Delete from district
 -- Delete from state_and_ut
 
-\copy state_and_ut from './utils/output/state_and_ut.csv' csv header;
-\copy district from './utils/output/district.csv' csv header;
-\copy district_daily from './utils/output/district_daily.csv' csv header;
-\copy state_daily from './utils/output/state_daily.csv' csv header;
-\copy vaccine_daily from './utils/output/vaccine_daily.csv' csv header;
+\copy state_and_ut from './../../utils/output/state_and_ut.csv' csv header;
+\copy district from './../../utils/output/district.csv' csv header;
+\copy district_daily from './../../utils/output/district_daily.csv' csv header;
+\copy state_daily from './../../utils/output/state_daily.csv' csv header;
+\copy vaccine_daily from './../../utils/output/vaccine_daily.csv' csv header;
