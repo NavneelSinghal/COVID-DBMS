@@ -57,6 +57,6 @@ FROM
 ) AS temp
 ;
 
--- EXECUTE state_summary(%s,%s,%s);
-EXECUTE state_summary('27-04-2020','25-05-2021',20);
-DEALLOCATE state_summary;
+EXECUTE state_summary(%s,%s,%s);
+--EXECUTE state_summary('27-04-2020','25-05-2021',20);
+--DEALLOCATE state_summary;
