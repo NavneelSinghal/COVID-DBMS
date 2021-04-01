@@ -203,7 +203,8 @@ response: {
 POST /api/management/newdistrict
 request: {
   stateid: number,
-  districtname: string
+  districtname: string,
+  population: number
 }
 response:
   either HTTP 200 OK
@@ -242,7 +243,6 @@ request: {
   date: date,
   confirmed: number,
   recovered: number,
-  active: number,
   deceased: number,
   tested: number
 }
