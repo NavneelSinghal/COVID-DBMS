@@ -43,6 +43,6 @@ WHERE state_id=$2
 ORDER BY date_1 DESC
 LIMIT $1;
 
--- EXECUTE state_daily_daily(%s,%s);
-EXECUTE state_daily_daily(5,10);
-DEALLOCATE state_daily_daily;
+EXECUTE state_daily_daily(%s,%s);
+--EXECUTE state_daily_daily(5,10);
+--DEALLOCATE state_daily_daily;
