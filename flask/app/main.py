@@ -329,6 +329,111 @@ def state_vaccinevalues():
     return request_query('app/sql/state_vaccine_summary.sql', (stateid, date))
 
 
+'''
+UPDATES
+'''
+
+def update_query(queryfile, inputs):
+    connection = None
+    query_output = -1
+    status = 200
+    try:
+        database_parameters = config()
+        connection = psycopg2.connect(**database_parameters)
+        cur = connection.cursor()
+        query = open(queryfile, 'r').read()
+        print('inputs:', inputs)
+        if inputs is None:
+            cur.execute(query)
+        else:
+            cur.execute(query, inputs)
+        connection.commit()
+        query_output = {'rowcount' : cur.rowcount}
+        cur.close()
+    except psycopg2.DatabaseError as error:
+        if connection is not None:
+            connection.rollback()
+        print(repr(error))
+        query_output = {'error': repr(error)}
+        status = 400
+    finally:
+        if connection is not None:
+            connection.close()
+    return (query_output, status)
+
+
+@app.route('/api/management/newdistrict', methods=['POST'])
+def newdistrict():
+    content = request.json
+    stateid = content['stateid']
+    districtname = content['districtname']
+    population = content['population']
+    return update_query('app/sql/new_district.sql', (stateid, districtname, population))
+
+
+@app.route('/api/management/updatedistrict', methods=['POST'])
+def updatedistrict():
+    content = request.json
+    districtid = content['districtid']
+    newname = content['newname']
+    return update_query('app/sql/updated_district.sql', (districtid, newname))
+
+
+@app.route('/api/management/deletedistrict', methods=['POST'])
+def deletedistrict():
+    content = request.json
+    districtid = content['districtid']
+    return update_query('app/sql/delete_district.sql', (districtid,))
+
+
+@app.route('/api/update/newcases', methods=['POST'])
+def newcases():
+    content = request.json
+    stateid = content['stateid']
+    districtid = content['districtid']
+    date = content['date']
+    confirmed = content['confirmed']
+    recovered = content['recovered']
+    deceased = content['deceased']
+    tested = content['tested']
+    other = 0
+    output, status = update_query('app/sql/update_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
+    if status == 400:
+        return output, status # no need to update state
+    if output['rowcount'] == 0:
+        output, status = update_query('app/sql/insert_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
+    _, _ = update('app/sql/update_state_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
+    return output, status
+
+
+@app.route('/api/update/newvaccinations', methods=['POST'])
+def newvaccinations():
+    content = request.json
+    stateid = content['stateid']
+    date = content['date']
+    sessions = content['sessions']
+    indivregistered = content['indivregistered']
+    males = content['males']
+    females = content['females']
+    trans = content['trans']
+    firstdose = content['firstdose']
+    seconddose = content['seconddose']
+    totaldose = content['totaldose']
+    covaxin = content['covaxin']
+    covishield = content['covishield']
+    sites = content['sites']
+    output, status = update_query('app/sql/update_vaccinations.sql', (stateid, date, sessions, indivregistered, males, females, trans, firstdose, seconddose, totaldose, covaxin, covishield, sites))
+    if status == 400:
+        return output, status
+    if output['rowcount'] == 0:
+        output, status = update_query('app/sql/insert_vaccinations.sql', (stateid, date, sessions, indivregistered, males, females, trans, firstdose, seconddose, totaldose, covaxin, covishield, sites))
+    return output, status
+
+
+@app.route('/api/update/refreshfull', methods=['POST'])
+def refreshfull():
+    return update_query('app/sql/refresh.sql')
+
 if __name__ == '__main__':
     # connect()
     app.run()

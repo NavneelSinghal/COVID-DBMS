@@ -1,16 +1,17 @@
-Prepare update_vaccinations(int,date,int,int,int,int,int,int,int,int,int,int,int) as 
-update vaccine_daily
-set Total_Sessions_Conducted=Total_Sessions_Conducted+$3,
-Total_Individuals_Registered=Total_Individuals_Registered+$4,
-Male_Individuals_Vaccinated=Male_Individuals_Vaccinated+$5,
-Female_Individuals_Vaccinated=Female_Individuals_Vaccinated+$6,
-Transgender_Individuals_Vaccinated=Transgender_Individuals_Vaccinated+$7,
-First_Dose_Administered=First_Dose_Administered+$8,
-Second_Dose_Administered=Second_Dose_Administered+$9,
-Total_Doses_Administered=Total_Doses_Administered+$10,
-Total_Covaxin_Administered=Total_Covaxin_Administered+$11,
-Total_CoviShield_Administered=Total_CoviShield_Administered+$12,
-Total_Sites=Total_Sites+$13
-where state_id=$1 and date_1=$2;
+PREPARE update_vaccinations(int,date,int,int,int,int,int,int,int,int,int,int,int) AS
+UPDATE vaccine_daily
+SET total_sessions_conducted=total_sessions_conducted+$3,
+    total_individuals_registered=total_individuals_registered+$4,
+    male_individuals_vaccinated=male_individuals_vaccinated+$5,
+    female_individuals_vaccinated=female_individuals_vaccinated+$6,
+    transgender_individuals_vaccinated=transgender_individuals_vaccinated+$7,
+    first_dose_administered=first_dose_administered+$8,
+    second_dose_administered=second_dose_administered+$9,
+    total_doses_administered=total_doses_administered+$10,
+    total_covaxin_administered=total_covaxin_administered+$11,
+    total_covishield_administered=total_covishield_administered+$12,
+    total_sites=total_sites+$13
+WHERE state_id=$1
+    AND date_1=$2;
 
 update_vaccinations(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
