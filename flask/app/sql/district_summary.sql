@@ -20,7 +20,7 @@ FROM
              (coalesce(to_row.cum_deceased, 0) - coalesce(from_row.cum_deceased, 0)) AS cum_deceased,
              (coalesce(to_row.cum_other, 0) - coalesce(from_row.cum_other, 0)) AS cum_other,
              (coalesce(to_row.active, 0) - coalesce(from_row.active, 0)) AS cum_active,
-             temp_row.population
+             to_row.population
      FROM
          ( SELECT *,
                   1 AS row_num
