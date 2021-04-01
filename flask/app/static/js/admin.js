@@ -122,6 +122,22 @@ updatedistrict.district.disabled = true;
 updatedistrict.newname.disabled = true;
 updatedistrict.button.disabled = true;
 
+sel = managetab.deletetable.querySelector.bind(managetab.deletetable);
+const deletedistrict = {
+  state: sel('select[name=state]'),
+  district: sel('select[name=district]'),
+  button: sel('button')
+};
+deletedistrict.state.addEventListener('change', () => updateState(
+  deletedistrict.state, deletedistrict.district, deletedistrict.district
+));
+deletedistrict.district.addEventListener('change', () => updateDistrict(
+  deletedistrict.district, deletedistrict.button
+));
+deletedistrict.button.addEventListener('click', postDeleteDistrict);
+deletedistrict.district.disabled = true;
+deletedistrict.button.disabled = true;
+
 switchTabs();
 setupPage();
 
@@ -139,7 +155,7 @@ function switchTabs(event) {
 function setupPage() {
   let stateDropdowns = [
     cases.state, vaccinations.state, adddistrict.state,
-    updatedistrict.state
+    updatedistrict.state, deletedistrict.state
   ];
 
   fetchget('/api/states/list', {}).then(
@@ -383,6 +399,29 @@ function postUpdateDistrict() {
       data => {
         if (data == undefined)
           return;
+        window.alert(data.error);
+      }
+    );
+  }
+}
+
+function postDeleteDistrict() {
+  if (window.confirm('Are you sure you want to delete this district?' +
+    'All data corresponding to this district will be deleted! ' +
+    'This process is irreversible.'))
+  {
+    fetchpost('/api/management/deletedistrict', {
+      districtid: deletedistrict.district.value
+    }).then(
+      response => {
+        if (response.ok) {
+          window.alert('District deleted permanently.');
+          return undefined;
+        }
+        return response.json();
+      }
+    ).then(
+      data => {
         window.alert(data.error);
       }
     );

@@ -1,5 +1,8 @@
 .title {
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 nav {
@@ -59,4 +62,22 @@ canvas {
   height: 300px;
   border: 1px solid black;
   margin: auto;
+}
+
+hr {
+  margin-bottom: 50px;
+  margin-top: 50px;
+}
+
+body {
+  padding-left: 20px;
+  padding-right: 20px;
+  font-family: 'Merriweather', serif;
+}
+
+.icon {
+  width: 3em;
+  height: 3em;
+  margin-left: 10px;
+  margin-right: 10px;
 }

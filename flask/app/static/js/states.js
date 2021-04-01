@@ -94,7 +94,8 @@ const analysis = {
 	daily: sel('optgroup[name=daily]'),
 	cumulative: sel('optgroup[name=cumulative]')
   },
-  query: sel('select[name=query]')
+  query: sel('select[name=query]'),
+  tablebody: sel('tbody')
 };
 analysis.refresh.addEventListener('click', refreshAnalysis);
 
