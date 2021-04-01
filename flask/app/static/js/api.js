@@ -8,6 +8,16 @@ function fetchget(api, params) {
   });
 }
 
+function fetchpost(api, params) {
+  return fetch(api, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(params)
+  });
+}
+
 function debugflask(api, params) {
   fetchget(api, params).then(
 	response => {

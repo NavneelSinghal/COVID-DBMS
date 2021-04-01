@@ -10,9 +10,7 @@
   <link rel="stylesheet" href="{{css}}/main.css">
   <link rel="stylesheet" href="{{css}}/admin.css">
 
-  <!-- Using chart.js CDN right now, will eventually use a local copy -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" defer></script>
-
+  <script src="{{js}}/api.js" defer></script>
   <script src="{{js}}/admin.js" defer></script>
 </head>
 
@@ -50,7 +48,7 @@
 	  </tr>
 	  <tr>
 		<td>District name</td>
-		<td colspan=3><input name="district" type="text"/></td>
+		<td colspan=3><select name="district"></select></td>
 	  </tr>
 	  <tr>
 		<td>Date</td>
@@ -171,7 +169,7 @@
 	</table>
 
 	<h3>Refresh database now</h3>
-	<table id="sync-views" class="mini-table">
+	<table id="refresh-all" class="mini-table">
 	  <tr>
         <td><button>Sync Now</button></td>
 	  </tr>
