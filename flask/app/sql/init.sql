@@ -19,8 +19,6 @@ CREATE table district(
     State_id bigint not null references state_and_ut(State_id),
     Population bigint,
     constraint district_key primary key(District_id)
-    ON Delete Cascade
-    On update cascade
 );
 
 CREATE table state_daily(
@@ -32,20 +30,16 @@ CREATE table state_daily(
     Other bigint,
     Tested bigint,
     constraint state_daily_key primary key(date_1,State_id)
-    ON Delete Cascade
-    On update cascade
 );
 
 CREATE table district_daily(
     date_1 Date not null,
-    District_id bigint Not null references District(District_id),
+    District_id bigint Not null references District(District_id) ON DELETE CASCADE,
     confirmed bigint,
     Recovered bigint,
     Deceased bigint,
     Other bigint,
     constraint district_daily_key primary key(date_1,District_id)
-    ON Delete Cascade
-    On update cascade
 );
 
 Create table vaccine_daily(
@@ -64,9 +58,6 @@ Create table vaccine_daily(
     Total_Individuals_Vaccinated bigint,
     Total_Doses_Administered bigint,
     constraint vaccine_daily_key primary key(date_1,State_id)
-    ON Delete Cascade
-    On update cascade
-
 );
 
 

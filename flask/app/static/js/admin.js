@@ -292,6 +292,7 @@ function updateVaccinationsDate() {
     response => response.json()
   ).then(
     data => {
+      console.log(data);
       vaccinations.rows.forEach((row) => {
         row.statetd.textContent = data[row.name];
       });
@@ -320,7 +321,7 @@ function postVaccinations() {
       response => {
         if (response.ok) {
           window.alert('Update operation successful');
-          updateCasesDate();
+          updateVaccinationsDate();
           return undefined;
         }
         return response.json();

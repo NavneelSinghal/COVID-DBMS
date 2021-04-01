@@ -14,4 +14,4 @@ SET total_sessions_conducted=total_sessions_conducted+$3,
 WHERE state_id=$1
     AND date_1=$2;
 
-update_vaccinations(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
+EXECUTE update_vaccinations(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
