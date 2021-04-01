@@ -308,7 +308,7 @@ def district_daily():
     return json.dumps(ans, default=default_serialize)
 
 
-@app.route('/api/district/values')
+@app.route('/api/districts/values')
 def district_values():
     districtid = request.args.get('districtid')
     date = request.args.get('date')
@@ -402,7 +402,7 @@ def newcases():
         return output, status # no need to update state
     if output['rowcount'] == 0:
         output, status = update_query('app/sql/insert_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
-    _, _ = update('app/sql/update_state_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
+    _, _ = update_query('app/sql/update_state_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
     return output, status
 
 

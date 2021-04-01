@@ -7,7 +7,6 @@ SET confirmed=confirmed+$4,
 WHERE date_1=$3
     AND district_id=$2 ;
 
---EXECUTE insert_cases(%s,%s,%s,%s,%s,%s,%s,%s);
 EXECUTE update_cases(%s,%s,%s,%s,%s,%s,%s,%s);
 
 -- execute update_cases(20,805,'30-04-2021',11,20,30,40,50);
