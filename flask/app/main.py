@@ -283,9 +283,50 @@ def district_list():
         return request_query('app/sql/district_list.sql', None)
 
 
-'''
-Updates
-'''
+@app.route('/api/districts/summary')
+def district_summary():
+    fromdate = correctdate(request.args.get('from'))
+    todate = correctdate(request.args.get('to'))
+    districtid = request.args.get('districtid')
+    return request_query('app/sql/district_summary.sql', (fromdate, todate, districtid))
+
+
+@app.route('/api/districts/daily')
+def district_daily():
+    statstype = request.args.get('type')
+    statsparam = request.args.get('parameter')
+    ndays = request.args.get('ndays')
+    districtid = request.args.get('districtid')
+    if statstype == 'Daily':
+        ans = request_query('app/sql/district_daily_daily.sql', (ndays, districtid), raw=True)
+    elif statstype == 'Cumulative':
+        ans = request_query('app/sql/district_daily_cumulative.sql', (ndays, districtid), raw=True)
+    else:
+        ans = request_query('app/sql/district_daily_avg.sql', (ndays, districtid), raw=True)
+    for k, v in ans.items():
+        ans[k] = list(reversed(v))
+    return json.dumps(ans, default=default_serialize)
+
+
+@app.route('/api/district/values')
+def district_values():
+    districtid = request.args.get('districtid')
+    date = request.args.get('date')
+    return request_query('app/sql/district_values.sql', (districtid, date))
+
+
+@app.route('/api/states/values')
+def state_values():
+    stateid = request.args.get('stateid')
+    date = request.args.get('date')
+    return request_query('app/sql/state_values.sql', (stateid, date))
+
+
+@app.route('/api/states/vaccinevalues')
+def state_vaccinevalues():
+    stateid = request.args.get('stateid')
+    date = request.args.get('date')
+    return request_query('app/sql/state_vaccine_summary.sql', (stateid, date))
 
 
 if __name__ == '__main__':
