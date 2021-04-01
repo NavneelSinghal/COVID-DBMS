@@ -173,13 +173,17 @@ def india_analysis():
     todate = correctdate(request.args.get('to'))
     statstype = request.args.get('type')
     statsparam = request.args.get('parameter')
-    query = request.args.get('query')  # not implemented
-    if statstype == 'Daily':
-        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statsparam))
-    elif statstype == 'Cumulative':
-        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statsparam))
+    query = request.args.get('query')
+    if query == 'Maximum':
+    	query = 'DSC'
     else:
-        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statsparam))
+    	query = 'ASC'
+    if statstype == 'Daily':
+        return request_query('app/sql/analysis_india_daily_daily.sql', (fromdate, todate, statsparam, query))
+    elif statstype == 'Cumulative':
+        return request_query('app/sql/analysis_india_daily_cumulative.sql', (fromdate, todate, statsparam, query))
+    else:
+        return request_query('app/sql/analysis_india_daily_avg.sql', (fromdate, todate, statsparam, query))
 
 
 @app.route('/api/india/liststates')
@@ -242,13 +246,17 @@ def state_analysis():
     todate = correctdate(request.args.get('to'))
     statstype = request.args.get('type')
     statsparam = request.args.get('parameter')
-    query = request.args.get('query')  # not implemented
-    if statstype == 'Daily':
-        return request_query('app/sql/analysis_state_daily_daily.sql', (stateid, fromdate, todate, statsparam))
-    elif statstype == 'Cumulative':
-        return request_query('app/sql/analysis_state_daily_cumulative.sql', (stateid, fromdate, todate, statsparam))
+    query = request.args.get('query')
+    if query == 'Maximum':
+    	query = 'DSC'
     else:
-        return request_query('app/sql/analysis_state_daily_avg.sql', (stateid, fromdate, todate, statsparam))
+    	query = 'ASC'
+    if statstype == 'Daily':
+        return request_query('app/sql/analysis_state_daily_daily.sql', (stateid, fromdate, todate, statsparam, query))
+    elif statstype == 'Cumulative':
+        return request_query('app/sql/analysis_state_daily_cumulative.sql', (stateid, fromdate, todate, statsparam, query))
+    else:
+        return request_query('app/sql/analysis_state_daily_avg.sql', (stateid, fromdate, todate, statsparam, query))
 
 
 @app.route('/api/states/listdistricts')
