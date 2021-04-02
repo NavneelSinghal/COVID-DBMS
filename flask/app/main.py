@@ -408,6 +408,10 @@ def newcases():
     if output['rowcount'] == 0:
         output, status = update_query('app/sql/insert_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
     _, _ = update_query('app/sql/update_state_cases.sql', (stateid, districtid, date, confirmed, recovered, deceased, other, tested))
+
+    output1, status1 = update_query('app/sql/update_vaccinations.sql', (stateid, date, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
+    if status1 == 200 and output1['rowcount'] == 0:
+        output1, status1 = update_query('app/sql/insert_vaccinations.sql', (stateid, date, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0))
     return output, status
 
 
