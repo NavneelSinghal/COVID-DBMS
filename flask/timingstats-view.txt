@@ -1,0 +1,137 @@
+ * Serving Flask app "app/main.py" (lazy loading)
+ * Environment: development
+ * Debug mode: on
+ * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 329-640-460
+127.0.0.1 - - [03/Apr/2021 00:05:27] "GET / HTTP/1.1" 200 -
+inputs: ('30-01-2020', '25-03-2021')
+inputs: ('7',)
+0.012203454971313477
+127.0.0.1 - - [03/Apr/2021 00:05:27] "GET /api/india/daily?type=Daily&parameter=Confirmed+Cases&ndays=7 HTTP/1.1" 200 -
+inputs: ('16-01-2021', '25-03-2021')
+inputs: ('Confirmed Cases',)
+inputs: ('18-01-2021', '25-03-2021', 'Confirmed Cases', 'DSC')
+0.02773737907409668
+127.0.0.1 - - [03/Apr/2021 00:05:27] "GET /api/india/summary?from=2020-01-30&to=2021-03-25 HTTP/1.1" 200 -
+0.017897844314575195
+127.0.0.1 - - [03/Apr/2021 00:05:27] "GET /api/india/vaccine?from=2021-01-16&to=2021-03-25 HTTP/1.1" 200 -
+0.017915010452270508
+127.0.0.1 - - [03/Apr/2021 00:05:27] "GET /api/india/analysis?from=2021-01-18&to=2021-03-25&type=Daily&parameter=Confirmed+Cases&query=Maximum HTTP/1.1" 200 -
+0.05509305000305176
+127.0.0.1 - - [03/Apr/2021 00:05:27] "GET /api/india/liststates?sortedby=Confirmed+Cases&sortedin=Descending HTTP/1.1" 200 -
+127.0.0.1 - - [03/Apr/2021 00:05:33] "GET /states HTTP/1.1" 200 -
+inputs: None
+0.00636744499206543
+127.0.0.1 - - [03/Apr/2021 00:05:33] "GET /api/states/list HTTP/1.1" 200 -
+inputs: ('30-01-2020', '25-03-2021', '2')
+inputs: ('7', '2')
+0.0060575008392333984
+127.0.0.1 - - [03/Apr/2021 00:05:37] "GET /api/states/daily?stateid=2&type=Daily&parameter=Confirmed+Cases&ndays=7 HTTP/1.1" 200 -
+inputs: ('2', '18-01-2021', '25-03-2021', 'Growth Rate', 'DSC')
+inputs: ('16-01-2021', '25-03-2021', '2')
+inputs: ('2', 'Confirmed Cases')
+0.007208824157714844
+127.0.0.1 - - [03/Apr/2021 00:05:37] "GET /api/states/analysis?stateid=2&from=2021-01-18&to=2021-03-25&type=Daily&parameter=Growth+Rate&query=Maximum HTTP/1.1" 200 -
+0.013813972473144531
+127.0.0.1 - - [03/Apr/2021 00:05:37] "GET /api/states/summary?stateid=2&from=2020-01-30&to=2021-03-25 HTTP/1.1" 200 -
+0.01195073127746582
+127.0.0.1 - - [03/Apr/2021 00:05:37] "GET /api/states/vaccine?stateid=2&from=2021-01-16&to=2021-03-25 HTTP/1.1" 200 -
+0.7279894351959229
+127.0.0.1 - - [03/Apr/2021 00:05:38] "GET /api/states/listdistricts?stateid=2&sortedby=Confirmed+Cases&sortedin=Descending HTTP/1.1" 200 -
+127.0.0.1 - - [03/Apr/2021 00:05:45] "GET /districts HTTP/1.1" 200 -
+inputs: None
+0.0058345794677734375
+127.0.0.1 - - [03/Apr/2021 00:05:45] "GET /api/states/list HTTP/1.1" 200 -
+inputs: ('2',)
+0.020586013793945312
+127.0.0.1 - - [03/Apr/2021 00:05:51] "GET /api/districts/list?stateid=2 HTTP/1.1" 200 -
+inputs: ('30-01-2020', '25-03-2021', '15')
+inputs: ('7', '15')
+0.02396678924560547
+127.0.0.1 - - [03/Apr/2021 00:05:54] "GET /api/districts/daily?districtid=15&type=Daily&parameter=Confirmed+Cases&ndays=7 HTTP/1.1" 200 -
+0.06968474388122559
+127.0.0.1 - - [03/Apr/2021 00:05:54] "GET /api/districts/summary?districtid=15&from=2020-01-30&to=2021-03-25 HTTP/1.1" 200 -
+127.0.0.1 - - [03/Apr/2021 00:06:06] "GET /auth HTTP/1.1" 200 -
+127.0.0.1 - - [03/Apr/2021 00:06:07] "GET /admin HTTP/1.1" 200 -
+inputs: None
+0.006367683410644531
+127.0.0.1 - - [03/Apr/2021 00:06:07] "GET /api/states/list HTTP/1.1" 200 -
+inputs: ('2',)
+0.01743340492248535
+127.0.0.1 - - [03/Apr/2021 00:06:10] "GET /api/districts/list?stateid=2 HTTP/1.1" 200 -
+inputs: ('15', '2021-04-01')
+inputs: ('2', '2021-04-01')
+0.00532078742980957
+127.0.0.1 - - [03/Apr/2021 00:06:19] "GET /api/districts/values?districtid=15&date=2021-04-01 HTTP/1.1" 200 -
+0.005792856216430664
+127.0.0.1 - - [03/Apr/2021 00:06:19] "GET /api/states/values?stateid=2&date=2021-04-01 HTTP/1.1" 200 -
+inputs: ('2', '15', '2021-04-01', '1', '1', '1', 0, '1')
+0.006438016891479492
+inputs: ('2', '15', '2021-04-01', '1', '1', '1', 0, '1')
+0.00810861587524414
+inputs: ('2', '15', '2021-04-01', '1', '1', '1', 0, '1')
+0.018796920776367188
+inputs: ('2', '2021-04-01', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+0.0073544979095458984
+inputs: ('2', '2021-04-01', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+0.007451772689819336
+127.0.0.1 - - [03/Apr/2021 00:06:24] "POST /api/update/newcases HTTP/1.1" 200 -
+inputs: ('2', '2021-04-01')
+inputs: ('15', '2021-04-01')
+0.004885435104370117
+127.0.0.1 - - [03/Apr/2021 00:06:25] "GET /api/states/values?stateid=2&date=2021-04-01 HTTP/1.1" 200 -
+0.004449605941772461
+127.0.0.1 - - [03/Apr/2021 00:06:25] "GET /api/districts/values?districtid=15&date=2021-04-01 HTTP/1.1" 200 -
+inputs: ('1',)
+0.005354642868041992
+127.0.0.1 - - [03/Apr/2021 00:06:28] "GET /api/districts/list?stateid=1 HTTP/1.1" 200 -
+inputs: ('2',)
+0.02379131317138672
+127.0.0.1 - - [03/Apr/2021 00:06:30] "GET /api/districts/list?stateid=2 HTTP/1.1" 200 -
+inputs: ('2', '2021-04-01')
+0.004973173141479492
+127.0.0.1 - - [03/Apr/2021 00:06:32] "GET /api/states/vaccinevalues?stateid=2&date=2021-04-01 HTTP/1.1" 200 -
+inputs: ('2', '2021-04-01', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1')
+0.00856161117553711
+127.0.0.1 - - [03/Apr/2021 00:06:42] "POST /api/update/newvaccinations HTTP/1.1" 200 -
+inputs: ('2', '2021-04-01')
+0.020664453506469727
+127.0.0.1 - - [03/Apr/2021 00:06:43] "GET /api/states/vaccinevalues?stateid=2&date=2021-04-01 HTTP/1.1" 200 -
+inputs: ('2', 'Example', '10')
+0.009571313858032227
+127.0.0.1 - - [03/Apr/2021 00:07:02] "POST /api/management/newdistrict HTTP/1.1" 200 -
+inputs: ('2',)
+0.013370990753173828
+127.0.0.1 - - [03/Apr/2021 00:07:07] "GET /api/districts/list?stateid=2 HTTP/1.1" 200 -
+inputs: ('801', 'Example2')
+0.02298569679260254
+127.0.0.1 - - [03/Apr/2021 00:07:17] "POST /api/management/updatedistrict HTTP/1.1" 200 -
+inputs: ('2',)
+0.013399124145507812
+127.0.0.1 - - [03/Apr/2021 00:07:21] "GET /api/districts/list?stateid=2 HTTP/1.1" 200 -
+inputs: ('801',)
+0.023230314254760742
+127.0.0.1 - - [03/Apr/2021 00:07:26] "POST /api/management/deletedistrict HTTP/1.1" 200 -
+127.0.0.1 - - [03/Apr/2021 00:07:31] "GET /districts HTTP/1.1" 200 -
+inputs: None
+0.004739284515380859
+127.0.0.1 - - [03/Apr/2021 00:07:31] "GET /api/states/list HTTP/1.1" 200 -
+127.0.0.1 - - [03/Apr/2021 00:07:32] "GET /dashboard HTTP/1.1" 200 -
+inputs: ('30-01-2020', '25-03-2021')
+0.021554231643676758
+127.0.0.1 - - [03/Apr/2021 00:07:32] "GET /api/india/summary?from=2020-01-30&to=2021-03-25 HTTP/1.1" 200 -
+inputs: ('7',)
+inputs: ('Confirmed Cases',)
+inputs: ('16-01-2021', '25-03-2021')
+inputs: ('18-01-2021', '25-03-2021', 'Confirmed Cases', 'DSC')
+0.014081478118896484
+127.0.0.1 - - [03/Apr/2021 00:07:32] "GET /api/india/analysis?from=2021-01-18&to=2021-03-25&type=Daily&parameter=Confirmed+Cases&query=Maximum HTTP/1.1" 200 -
+0.017139911651611328
+127.0.0.1 - - [03/Apr/2021 00:07:32] "GET /api/india/vaccine?from=2021-01-16&to=2021-03-25 HTTP/1.1" 200 -
+0.021055221557617188
+127.0.0.1 - - [03/Apr/2021 00:07:32] "GET /api/india/daily?type=Daily&parameter=Confirmed+Cases&ndays=7 HTTP/1.1" 200 -
+0.0566866397857666
+127.0.0.1 - - [03/Apr/2021 00:07:32] "GET /api/india/liststates?sortedby=Confirmed+Cases&sortedin=Descending HTTP/1.1" 200 -
+
