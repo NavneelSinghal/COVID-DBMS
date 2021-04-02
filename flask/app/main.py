@@ -5,6 +5,7 @@ from flask import Flask, render_template, request, url_for
 from configparser import ConfigParser
 import datetime
 import json
+import time
 
 
 def correctdate(a):
@@ -46,6 +47,7 @@ Helper function for query - returns (error_code, list of tuples)
 
 
 def request_query(queryfile, inputs, is_update=False, cols=None, raw=False):
+    t = time.time()
     connection = None
     query_output = None
     try:
@@ -87,6 +89,7 @@ def request_query(queryfile, inputs, is_update=False, cols=None, raw=False):
         for col in cols:
             ret[col] = query_output[col]
         query_output = ret
+    print(time.time() - t)
     if raw:
         return query_output
     return json.dumps(query_output, default=default_serialize)
@@ -337,6 +340,7 @@ def update_query(queryfile, inputs):
     connection = None
     query_output = -1
     status = 200
+    t = time.time()
     try:
         database_parameters = config()
         connection = psycopg2.connect(**database_parameters)
@@ -359,6 +363,7 @@ def update_query(queryfile, inputs):
     finally:
         if connection is not None:
             connection.close()
+    print(time.time() - t)
     return (query_output, status)
 
 
