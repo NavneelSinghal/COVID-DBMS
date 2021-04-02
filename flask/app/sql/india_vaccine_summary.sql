@@ -22,10 +22,10 @@ from(
          cum_Total_Sessions_Conducted,
          cum_Total_Covaxin_Administered,
          cum_Total_CoviShield_Administered,
-         round(100 * cum_First_Dose_Administered/cum_Total_Doses_Administered,2) as a1,
-         round(cum_Total_Doses_Administered/population*100000,2) as a2,
-         round(cum_First_Dose_Administered/population*100000,2) as a3,
-         round(cum_Second_Dose_Administered/population*100000,2) as a4
+         round(100 * cum_First_Dose_Administered/NULLIF(cum_Total_Doses_Administered,0),2) as a1,
+         round(cum_Total_Doses_Administered/NULLIF(population,0)*100000,2) as a2,
+         round(cum_First_Dose_Administered/NULLIF(population,0)*100000,2) as a3,
+         round(cum_Second_Dose_Administered/NULLIF(population,0)*100000,2) as a4
   from(
 Select 
 Coalesce(to_row.cum_Total_Doses_Administered,0)-coalesce(from_row.cum_Total_Doses_Administered,0) as cum_Total_Doses_Administered,
