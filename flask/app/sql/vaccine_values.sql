@@ -7,7 +7,9 @@ SELECT total_doses_administered AS "Total Dose",
        transgender_individuals_vaccinated AS "Transgender Vaccinated",
        total_sessions_conducted AS "Total Sessions Conducted",
        total_covaxin_administered AS "Total Covaxin",
-       total_covishield_administered AS "Total Covishield"
+       total_covishield_administered AS "Total Covishield",
+       total_sites AS "Total Sites",
+       total_individuals_registered AS "Total Individuals Registered"
 FROM vaccine_daily
 WHERE state_id=$1
     AND date_1=$2 ;

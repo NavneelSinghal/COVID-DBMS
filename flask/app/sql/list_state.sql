@@ -21,13 +21,14 @@ FROM
                       cum_deceased,
                       cum_other,
                       cum_total_doses_administered,
-                      cum_tested
+                      cum_tested,
+                      rank() over(partition by state_cumulative.state_id order by state_cumulative.date_1 desc)
                FROM state_cumulative
                LEFT OUTER JOIN state_vaccine_cumulative ON state_cumulative.date_1=state_vaccine_cumulative.date_1
                AND state_cumulative.state_id=state_vaccine_cumulative.state_id) AS temp1
           NATURAL JOIN state_and_ut
-          ORDER BY date_1 DESC
-          LIMIT 37) AS temp2) AS temp3
+          where rank=1
+          ) AS temp2) AS temp3
 ORDER BY CASE
              WHEN $1='Name' THEN "Name"
          END, -- Case when $1='Name' and $2='Descending' then "Name" desc end,

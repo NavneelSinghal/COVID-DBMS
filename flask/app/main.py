@@ -441,7 +441,7 @@ def newvaccinations():
 
 @app.route('/api/update/refreshfull', methods=['POST'])
 def refreshfull():
-    return update_query('app/sql/refresh.sql')
+    return update_query('app/sql/refresh.sql', ())
 
 if __name__ == '__main__':
     # connect()

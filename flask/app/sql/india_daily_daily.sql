@@ -6,20 +6,25 @@ SELECT date_1 AS "Date",
        deceased AS "Deceased Cases",
        other AS "Other Cases",
        tested AS "Tested",
-       coalesce(total_doses_administered,0) AS "Total Vaccine Doses",
-       round(active/nullif(confirmed,0),2) as "Active Ratio",
-        round(recovered/nullif(confirmed,0),2) as "Recovery Ratio",
-        round(confirmed/nullif(tested,0),2) as "Test Positivity Ratio",
-        round(deceased/nullif(confirmed,0),2) as "Fatality Ratio"
-        from
-    (SELECT date_1,confirmed,recovered,active,deceased,other,tested,total_doses_administered from
-         (SELECT *
-          FROM
-              (SELECT india_daily.date_1,confirmed,recovered,deceased,other,tested,active,total_doses_administered
-               FROM india_daily
-               LEFT OUTER JOIN india_vaccine_daily ON india_daily.date_1=india_vaccine_daily.date_1) AS temp1, india_population) AS temp2) AS temp3
+       coalesce(total_doses_administered, 0) AS "Total Vaccine Doses",
+       round(active/ nullif(confirmed, 0), 2) AS "Active Ratio",
+       round(recovered/nullif(confirmed, 0), 2) AS "Recovery Ratio",
+       round(confirmed/nullif(tested, 0), 2) AS "Test Positivity Ratio",
+       round(deceased/nullif(confirmed, 0), 2) AS "Fatality Ratio"
+FROM
+  (SELECT india_daily.date_1,
+          confirmed,
+          recovered,
+          deceased,
+          other,
+          tested,
+          active,
+          total_doses_administered
+   FROM india_daily
+   LEFT OUTER JOIN india_vaccine_daily USING (date_1)) AS temp1
 ORDER BY date_1 DESC
 LIMIT $1;
 
 EXECUTE india_daily_daily(%s);
+
 --DEALLOCATE india_daily_daily;
