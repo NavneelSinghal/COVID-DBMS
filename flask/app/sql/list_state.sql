@@ -22,7 +22,7 @@ FROM
                       cum_other,
                       cum_total_doses_administered,
                       cum_tested,
-                      rank() over(partition by state order by state_cumulative.date_1 desc)
+                      rank() over(partition by state_cumulative.state_id order by state_cumulative.date_1 desc)
                FROM state_cumulative
                LEFT OUTER JOIN state_vaccine_cumulative ON state_cumulative.date_1=state_vaccine_cumulative.date_1
                AND state_cumulative.state_id=state_vaccine_cumulative.state_id) AS temp1

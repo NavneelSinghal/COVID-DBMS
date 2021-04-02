@@ -1,3 +1,11 @@
+Drop Materialized view India_Vaccine_daily;
+Drop Materialized view India_Daily;
+Drop Materialized View India_Cumulative;
+Drop Materialized View India_Vaccine_Cumulative;
+Drop materialized view State_Vaccine_Cumulative;
+Drop materialized view District_Cumulative;
+Drop materialized view State_Cumulative;
+Drop Materialized View India_population; 
 CREATE materialized VIEW state_vaccine_cumulative
 AS SELECT date_1,
           state_id,
@@ -244,11 +252,4 @@ AS SELECT date_1,
    GROUP  BY date_1
 -- order by date_1
 ;
--- Drop Materialized view India_Vaccine_daily;
--- Drop Materialized view India_Daily;
--- Drop Materialized View India_Cumulative;
--- Drop Materialized View India_Vaccine_Cumulative;
--- Drop materialized view State_Vaccine_Cumulative;
--- Drop materialized view District_Cumulative;
--- Drop materialized view State_Cumulative;
--- Drop Materialized View India_population; 
+
