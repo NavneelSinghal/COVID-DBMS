@@ -1,7 +1,6 @@
 import psycopg2
 
 from flask import Flask, render_template, request, url_for
-# from flask_login import current_user
 from configparser import ConfigParser
 import datetime
 import json
